@@ -8,10 +8,10 @@ HADOOP_HOME="/s/bach/l/under/kdmcb/cs455-PA3/"
 cd "$PROJECT_DIR" || exit
 
 # Clean the previous build artifacts
-./gradlew clean
+gradle clean
 
 # Build the Gradle project
-./gradlew build
+gradle build
 
 # Check if the build was successful
 if [ $? -eq 0 ]; then
