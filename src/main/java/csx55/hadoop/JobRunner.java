@@ -1,31 +1,27 @@
 package csx55.hadoop;
 
+import csx55.hadoop.jobs.preProccessing.PreProcessing;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-
-import java.io.IOException;
-import java.util.Scanner;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class JobRunner {
-    public static void main(String[] args) {
-        System.out.printf("Select Which HDFS Job to Run");
 
-        Scanner scanner = new Scanner(System.in);
-        switch (scanner.nextInt()) {
-            case 1:
-                runJob1();
-                break;
-            case 2:
-                runJob2();
-                break;
-            case 3:
-                runJob3();
-                break;
-            default:
-                System.out.println("Invalid Job Number");
-
-        }
+    public static void main(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "CombineFiles");
+        job.setJarByClass(JobRunner.class);
+        job.setMapperClass(PreProcessing.PreProcessingMapper.class);
+        job.setReducerClass(PreProcessing.PreProcessingReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileInputFormat.addInputPath(job, new Path(args[1])); // Add second input path
+        FileOutputFormat.setOutputPath(job, new Path(args[2]));
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
