@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Set variables
-PROJECT_DIR="/s/bach/l/under/kdmcb/cs455-PA3/src/main/java/csx55/hadoop"
-HADOOP_HOME="/s/bach/l/under/kdmcb/cs455-PA3/"
-
-# Navigate to the project directory
-cd "$PROJECT_DIR" || exit
-
 # Clean the previous build artifacts
 gradle clean
 
