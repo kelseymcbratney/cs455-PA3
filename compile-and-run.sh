@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Clean the previous build artifacts
+hadoop fs -rm -r /PA3/output
+
 gradle clean
 
 # Build the Gradle project
