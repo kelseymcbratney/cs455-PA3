@@ -9,9 +9,13 @@ repositories {
     mavenCentral()
 }
 
-// Specify the main class for your project
-mainClassName = 'csx55.hadoop.JobRunner'
-
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'csx55.hadoop.JobRunner'
+        )
+    }
+}
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
