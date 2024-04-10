@@ -4,6 +4,7 @@ import csx55.hadoop.Constants;
 import csx55.hadoop.jobs.songCount.*;
 
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -25,7 +26,7 @@ public class JobRunner {
         job.setReducerClass(SongCountReducer.class);
 
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
+        job.setOutputValueClass(LongWritable.class);
 
         FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
