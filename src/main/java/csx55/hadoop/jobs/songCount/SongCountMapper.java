@@ -9,13 +9,13 @@ import static csx55.hadoop.Constants.Analysis.*;
 import static csx55.hadoop.Constants.Metadata.*;
 import static csx55.hadoop.Constants.Analysis.*;
 
-public class SongCountMapper extends Mapper<Text, Text, Text, Text> {
+public class SongCountMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     private static final Text artistName = new Text();
     private static final LongWritable one = new LongWritable(1);
 
     @Override
-    protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // Split the input line by tabs or other delimiters
         String[] fields = value.toString().split("\\|");
         if (fields.length > 6) {
