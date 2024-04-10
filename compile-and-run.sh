@@ -2,6 +2,7 @@
 
 # Clean the previous build artifacts
 hadoop fs -rm -r /PA3/songCount
+hadoop fs -rm -r /PA3/songCount_sorted/
 
 gradle clean
 
