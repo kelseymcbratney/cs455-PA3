@@ -80,9 +80,12 @@ public class JobRunner {
             FileInputFormat.addInputPath(sortJob, new Path(args[2]));
             FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_sorted"));
 
+            // Execute the sort job and wait for it to finish
+            success = sortJob.waitForCompletion(true);
         }
 
-        return job.waitForCompletion(true);
+        return success;
     }
+
 
 }
