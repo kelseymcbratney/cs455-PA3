@@ -22,11 +22,11 @@ public class JobRunner {
         String jobType = args[3];
 
         switch (jobType) {
-            case "1":
+            case "0":
                 runSongCountJob(args);
                 runSortedSongCountJob(args);
                 break;
-            case "2":
+            case "1":
                 runSongCountJob(args);
                 runSortedSongCountJob(args);
                 break;
