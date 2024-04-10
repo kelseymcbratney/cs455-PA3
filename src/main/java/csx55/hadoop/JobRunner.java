@@ -25,7 +25,7 @@ public class JobRunner {
         job.setMapperClass(SongCountMapper.class);
         job.setReducerClass(SongCountReducer.class);
 
-        job.setOutputKeyClass(LongWritable.class);
+        job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
         FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
