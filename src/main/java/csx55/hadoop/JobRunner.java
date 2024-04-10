@@ -1,6 +1,7 @@
 package csx55.hadoop;
 
-import csx55.hadoop.jobs.preProccessing.PreProcessing;
+import csx55.hadoop.Constants;
+import csx55.hadoop.jobs.songCount.*;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
@@ -18,10 +19,10 @@ public class JobRunner {
 
         Job job = Job.getInstance();
         job.setJarByClass(JobRunner.class);
-        job.setJobName("CombineFiles");
+        job.setJobName("SongCount");
 
-        job.setMapperClass(PreProcessing.PreProcessingMapper.class);
-        job.setReducerClass(PreProcessing.PreProcessingReducer.class);
+        job.setMapperClass(SongCountMapper.class);
+        job.setReducerClass(SongCountReducer.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
