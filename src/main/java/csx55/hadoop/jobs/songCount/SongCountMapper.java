@@ -4,7 +4,9 @@ import java.io.IOException;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
+
+import static csx55.hadoop.Constants.Metadata.*;
+import static csx55.hadoop.Constants.Analysis.*;
 
 public class SongCountMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 
@@ -17,7 +19,7 @@ public class SongCountMapper extends Mapper<LongWritable, Text, Text, LongWritab
         String[] fields = value.toString().split("\t");
         if (fields.length > 6) {
             // Extract the artist name
-            String artist = fields[6];
+            String artist = fields[ARTIST_NAME_INDEX];
             // Emit (artist_name, 1) pair
             artistName.set(artist);
             context.write(artistName, one);
