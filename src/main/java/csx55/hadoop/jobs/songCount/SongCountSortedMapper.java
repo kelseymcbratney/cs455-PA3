@@ -12,7 +12,7 @@ public class SongCountSortedMapper extends Mapper<Object, Text, LongWritable, Te
         String[] parts = value.toString().split(",");
         try {
             long count = Long.parseLong(parts[parts.length - 1].trim());
-            String artistName = parts[parts.length - 3].trim();
+            String artistName = parts[parts.length - 2].trim();
             context.write(new LongWritable(count), new Text(artistName));
         } catch (NumberFormatException e) {
             System.err.println("Error parsing count in SongCountSortedMapper: " + e.getMessage());
