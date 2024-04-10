@@ -16,7 +16,7 @@ public class SongCountMapper extends Mapper<LongWritable, Text, Text, LongWritab
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // Split the input line by tabs or other delimiters
-        String[] fields = value.toString().split(",");
+        String[] fields = value.toString().split("\\|");
         if (fields.length > 6) {
             // Extract the artist name
             String artist = fields[ARTIST_NAME_INDEX];
