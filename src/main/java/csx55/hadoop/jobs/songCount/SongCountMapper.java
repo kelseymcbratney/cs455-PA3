@@ -18,7 +18,7 @@ public class SongCountMapper extends Mapper<LongWritable, Text, Text, Text> {
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // Split the input line by tabs or other delimiters
         String[] fields = value.toString().split("\\|");
-        if (fields.length > 6) {
+        if (fields.length == 13) {
             // Extract the artist name
             String artist_id = fields[ARTIST_ID_INDEX];
             String artist_name = fields[ARTIST_NAME_INDEX];
