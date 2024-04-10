@@ -23,6 +23,6 @@ public class SongCountReducer extends Reducer<Text, Text, Text, Text> {
         }
         // Write the sum as the key and the original key as the value
         assert parts != null;
-        context.write(key, new Text(parts[artistIndex] + " , " + sum));
+        context.write(key, new Text(parts[artistIndex] + ", " + sum));
     }
 }

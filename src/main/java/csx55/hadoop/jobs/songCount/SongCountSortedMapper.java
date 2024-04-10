@@ -5,16 +5,17 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-//public class SongCountSortedMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
-//
-//    @Override
-//    protected void map(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-//        long sum = 0;
-//        // Iterate through all the values for a particular key
-//        for (Text value : values) {
-//            sum += Long.parseLong(value.toString());
-//        }
-//        // Write the sum as the key and the original key as the value
-//        context.write(new LongWritable(sum), key);
-//    }
-//}
+public class SongCountSortedMapper extends Mapper<Object, Text, LongWritable, Text> {
+
+    @Override
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        String[] parts = value.toString().split(",");
+        try {
+            long count = Long.parseLong(parts[parts.length - 1].trim());
+            String artistName = parts[parts.length - 3].trim();
+            context.write(new LongWritable(count), new Text(artistName));
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing count in SongCountSortedMapper: " + e.getMessage());
+        }
+    }
+}
