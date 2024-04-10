@@ -15,7 +15,7 @@ public class JobRunner {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 4) {
-            System.err.println("Usage: JobRunner <inputDir1> <inputDir2> <outputDir> <jobType>");
+            System.err.println("Usage: JobRunner <inputDir1> <inputDir2> <outputDir> <jobType> Available options:\n1. Run All Jobs, \n2. SongCount");
             System.exit(1);
         }
 
