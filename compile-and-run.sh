@@ -4,6 +4,8 @@
 hadoop fs -rm -r /PA3/songCount
 hadoop fs -rm -r /PA3/songCount_sorted/
 
+rm JobRunner.jar
+
 gradle clean
 
 # Build the Gradle project
