@@ -22,7 +22,7 @@ public class JobRunner {
         String jobType = args[3];
 
         switch (jobType) {
-            case "0":
+            case "0": // Run all jobs
                 if (!runSongCountJob(args)) {
                     System.exit(1);
                 }
@@ -86,7 +86,7 @@ public class JobRunner {
             sortJob.setOutputValueClass(LongWritable.class);
 
             FileInputFormat.addInputPath(sortJob, new Path(args[2]));
-            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_sorted"));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_songCount"));
 
             // Execute the sort job and wait for it to finish
             success = sortJob.waitForCompletion(true);
@@ -109,7 +109,7 @@ public class JobRunner {
         job.setOutputValueClass(Text.class);
 
         FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
-        FileOutputFormat.setOutputPath(job, new Path(args[2]));
+        FileOutputFormat.setOutputPath(job, new Path(args[2] + "_loudestSongs"));
 
         return job.waitForCompletion(true);
 
