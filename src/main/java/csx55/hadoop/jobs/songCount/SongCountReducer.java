@@ -18,10 +18,11 @@ public class SongCountReducer extends Reducer<Text, Text, Text, Text> {
             parts = value.toString().split(",");
             // Assuming the count is at the last index
             countIndex = parts.length - 1;
-            artistIndex = parts.length - 3;
+            artistIndex = parts.length - 4;
             sum += Long.parseLong(parts[countIndex]);
         }
         // Write the sum as the key and the original key as the value
-        context.write(key,new Text(parts[artistIndex] + "," + sum));
+        assert parts != null;
+        context.write(key, new Text(parts[artistIndex] + " , " + sum));
     }
 }
