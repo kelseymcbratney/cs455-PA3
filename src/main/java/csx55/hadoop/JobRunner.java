@@ -1,6 +1,6 @@
 package csx55.hadoop;
 
-import csx55.hadoop.Constants;
+import csx55.hadoop.jobs.loudestSongs.*;
 import csx55.hadoop.jobs.songCount.*;
 
 import org.apache.hadoop.fs.Path;
@@ -26,9 +26,17 @@ public class JobRunner {
                 if (!runSongCountJob(args)) {
                     System.exit(1);
                 }
+                if (!runLoudestSongsJob(args)) {
+                    System.exit(1);
+                }
                 break;
             case "1":
                 if (!runSongCountJob(args)) {
+                    System.exit(1);
+                }
+                break;
+            case "2":
+                if (!runLoudestSongsJob(args)) {
                     System.exit(1);
                 }
                 break;
@@ -86,6 +94,27 @@ public class JobRunner {
 
         return success;
     }
+
+
+    private static boolean runLoudestSongsJob(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
+        job.setJarByClass(JobRunner.class);
+        job.setJobName("LoudestSongs");
+
+        job.setMapperClass(LoudestSongsMapper.class);
+        job.setReducerClass(LoudestSongsReducer.class);
+
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+        FileOutputFormat.setOutputPath(job, new Path(args[2]));
+
+        return job.waitForCompletion(true);
+
+    }
+
 
 
 }
