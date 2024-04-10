@@ -1,4 +1,5 @@
 #!/bin/bash
+git pull
 
 # Clean the previous build artifacts
 hadoop fs -rm -r /PA3/songCount
