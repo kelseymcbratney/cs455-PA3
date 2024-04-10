@@ -3,7 +3,7 @@ package csx55.hadoop;
 public class Constants {
     // Constants related to song metadata
     public static class Analysis {
-        public static final int SONG_ID_INDEX = 0;
+        public static final int SONG_ID_ANALYSIS_INDEX = 0;
         public static final int SONG_HOTTNESSS_INDEX = 1;
         public static final int ANALYSIS_SAMPLE_RATE_INDEX = 2;
         public static final int DANCEABILITY_INDEX = 3;
