@@ -32,6 +32,30 @@ public class JobRunner {
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
         boolean success = job.waitForCompletion(true);
+
+        if (success) {
+            // Run the second job for sorting
+            Job sortJob = Job.getInstance();
+
+            sortJob.setJarByClass(JobRunner.class);
+            sortJob.setMapperClass(SongCountSortedReducer.class);
+            sortJob.setNumReduceTasks(1); // Only one reducer for sorting
+            sortJob.setSortComparatorClass(LongWritable.DecreasingComparator.class);
+
+            sortJob.setMapOutputKeyClass(LongWritable.class);
+            sortJob.setMapOutputValueClass(Text.class);
+
+            sortJob.setOutputKeyClass(Text.class);
+            sortJob.setOutputValueClass(LongWritable.class);
+
+            FileInputFormat.addInputPath(sortJob, new Path(args[1]));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[1] + "_sorted"));
+
+            System.exit(sortJob.waitForCompletion(true) ? 0 : 1);
+        } else {
+            System.exit(1);
+        }
+
         System.exit(success ? 0 : 1);
     }
 }
