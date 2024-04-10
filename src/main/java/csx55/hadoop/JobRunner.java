@@ -48,8 +48,8 @@ public class JobRunner {
             sortJob.setOutputKeyClass(Text.class);
             sortJob.setOutputValueClass(LongWritable.class);
 
-            FileInputFormat.addInputPath(sortJob, new Path(args[1]));
-            FileOutputFormat.setOutputPath(sortJob, new Path(args[1] + "_sorted"));
+            FileInputFormat.addInputPath(sortJob, new Path(args[2]));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_sorted"));
 
             System.exit(sortJob.waitForCompletion(true) ? 0 : 1);
         } else {
