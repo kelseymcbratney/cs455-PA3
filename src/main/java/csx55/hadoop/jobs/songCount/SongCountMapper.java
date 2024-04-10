@@ -19,7 +19,7 @@ public class SongCountMapper extends Mapper<LongWritable, Text, Text, LongWritab
         String[] fields = value.toString().split("\\|");
         if (fields.length > 6) {
             // Extract the artist name
-            String artist = fields[ARTIST_ID_INDEX];
+            String artist = fields[ARTIST_NAME_INDEX];
             // Emit (artist_name, 1) pair
             artistName.set(artist);
             context.write(artistName, one);
