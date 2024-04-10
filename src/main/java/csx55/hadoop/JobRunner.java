@@ -9,16 +9,36 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.conf.Configuration;
 
 public class JobRunner {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
-            System.err.println("Usage: JobRunner <inputDir1> <inputDir2> <outputDir>");
+        if (args.length != 4) {
+            System.err.println("Usage: JobRunner <inputDir1> <inputDir2> <outputDir> <jobType>");
             System.exit(1);
         }
 
-        Job job = Job.getInstance();
+        String jobType = args[3];
+
+        switch (jobType) {
+            case "1":
+                runSongCountJob(args);
+                runSortedSongCountJob(args);
+                break;
+            case "2":
+                runSongCountJob(args);
+                runSortedSongCountJob(args);
+                break;
+            default:
+                System.err.println("Invalid job type. Available options:\n1. Run All Jobs, \n2. SongCount");
+                System.exit(1);
+        }
+    }
+
+    private static void runSongCountJob(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
         job.setJarByClass(JobRunner.class);
         job.setJobName("SongCount");
 
@@ -32,39 +52,30 @@ public class JobRunner {
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
         boolean success = job.waitForCompletion(true);
+        System.exit(success ? 0 : 1);
+    }
 
-        if (success) {
-            Job sortJob = Job.getInstance();
-            sortJob.setJarByClass(JobRunner.class); // Ensure JobRunner is your main class
+    private static void runSortedSongCountJob(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
+        job.setJarByClass(JobRunner.class);
 
-            // Set the new classes for the mapper and reducer
-            sortJob.setMapperClass(SongCountSortedMapper.class);
-            sortJob.setReducerClass(SongCountSortedReducer.class);
+        job.setMapperClass(SongCountSortedMapper.class);
+        job.setReducerClass(SongCountSortedReducer.class);
 
-            // Setting the number of reduce tasks
-            sortJob.setNumReduceTasks(1); // Only one reducer to ensure global ordering
+        job.setNumReduceTasks(1);
+        job.setSortComparatorClass(LongWritable.DecreasingComparator.class);
 
-            // If you want to sort in descending order, use the DecreasingComparator as before
-            sortJob.setSortComparatorClass(LongWritable.DecreasingComparator.class);
+        job.setMapOutputKeyClass(LongWritable.class);
+        job.setMapOutputValueClass(Text.class);
 
-            // Set the map output key/value classes according to the mapper's outputs
-            sortJob.setMapOutputKeyClass(LongWritable.class);
-            sortJob.setMapOutputValueClass(Text.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(LongWritable.class);
 
-            // Set the final output key/value classes according to the reducer's outputs
-            sortJob.setOutputKeyClass(Text.class);
-            sortJob.setOutputValueClass(LongWritable.class);
+        FileInputFormat.setInputPaths(job, new Path(args[2]));
+        FileOutputFormat.setOutputPath(job, new Path(args[2] + "_sorted"));
 
-            // Specify the input and output paths
-            // Ensure the input path is the output path of your first MapReduce job
-            FileInputFormat.addInputPath(sortJob, new Path(args[2])); // Assuming args[1] is the correct input path
-            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_sorted")); // Adjust if necessary
-
-            // Execute the job and wait for it to finish
-            System.exit(sortJob.waitForCompletion(true) ? 0 : 1);
-        } else {
-            System.exit(1);
-        }
+        boolean success = job.waitForCompletion(true);
         System.exit(success ? 0 : 1);
     }
 }
