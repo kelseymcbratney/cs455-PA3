@@ -4,7 +4,7 @@ git pull
 # Clean the previous build artifacts
 hadoop fs -rm -r /PA3/output/
 hadoop fs -rm -r /PA3/output_songCount/
-hadoop fs -rm -r /PA3/output_loudestSong/
+hadoop fs -rm -r /PA3/output_loudestSongs/
 
 rm JobRunner.jar
 
