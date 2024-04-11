@@ -1,28 +1,35 @@
 package csx55.hadoop.jobs.loudestSongs;
 
+import java.io.IOException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
-import java.io.IOException;
-
 public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
+
     @Override
-    protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-        int count = 0;
-        double totalLoudness = 0;
+    public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        String songName = null;
+        String loudness = null;
+        String artistName = null;
+        String artistId = null;
 
         for (Text value : values) {
-            String[] fields = value.toString().split(",");
-            if (fields.length == 3) {
-                double loudness = Double.parseDouble(fields[1]);
-                totalLoudness += loudness;
-                count++;
+            String[] parts = value.toString().split("\\|");
+            String type = parts[0];
+            String data = parts[1];
+
+            if (type.equals("A")) {
+                loudness = data;
+            } else if (type.equals("B")) {
+                String[] songInfo = data.split(",");
+                songName = songInfo[0];
+                artistName = songInfo[1];
+                artistId = key.toString(); // Since artistId is the key in this case
             }
         }
 
-        if (count > 0) {
-            double averageLoudness = totalLoudness / count;
-            context.write(new Text(key.toString()), new Text(Double.toString(averageLoudness)));
+        if (songName != null && loudness != null) {
+            context.write(new Text(artistId), new Text(songName + "," + loudness + "," + artistName));
         }
     }
 }

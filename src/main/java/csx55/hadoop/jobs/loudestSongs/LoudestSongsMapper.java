@@ -9,30 +9,30 @@ import java.io.IOException;
 import static csx55.hadoop.Constants.Analysis.*;
 import static csx55.hadoop.Constants.Metadata.*;
 
-
 public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
+
+    private static final int SONG_ID_ANALYSIS_INDEX = 0;
+    private static final int LOUDNESS_INDEX = 1;
+    private static final int TITLE_INDEX = 0;
+    private static final int ARTIST_NAME_INDEX = 1;
+    private static final int ARTIST_ID_INDEX = 2;
+
     @Override
-    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
+    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // Split the input line into parts
         String[] fields = value.toString().split("\\|");
-        String song_id = null;
-        String song_name = null;
-        String loudness = null;
-        String artist_name = null;
-        String artist_id = null;
 
         if (fields.length == 32) {
-            // Extract the song name and loudness
-            song_id = fields[SONG_ID_ANALYSIS_INDEX];
-            loudness = fields[LOUDNESS_INDEX];
-
+            // Extract the song id and loudness from the first input type
+            String songId = fields[SONG_ID_ANALYSIS_INDEX];
+            String loudness = fields[LOUDNESS_INDEX];
+            context.write(new Text(songId), new Text("A|" + loudness));
         } else if (fields.length == 14) {
-            // Extract the song name and loudness
-            song_name = fields[TITLE_INDEX];
-            artist_name = fields[ARTIST_NAME_INDEX];
-            artist_id = fields[ARTIST_ID_INDEX];
+            // Extract the song name, artist name, and artist id from the second input type
+            String songName = fields[TITLE_INDEX];
+            String artistName = fields[ARTIST_NAME_INDEX];
+            String artistId = fields[ARTIST_ID_INDEX];
+            context.write(new Text(artistId), new Text("B|" + songName + "," + artistName));
         }
-
-        context.write(new Text(song_id), new Text(song_name + "," + loudness + "," + artist_name + "," + artist_id));
     }
 }
