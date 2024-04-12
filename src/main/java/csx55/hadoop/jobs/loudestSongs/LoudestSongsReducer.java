@@ -15,7 +15,7 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
         String data = null;
 
         for (Text value : values) {
-            String[] parts = value.toString().split("\\|");
+            String[] parts = value.toString().split(",");
             type = parts[0];
             data = parts[1];
 
@@ -36,6 +36,6 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
 
         }
 
-        context.write(new Text(songName), new Text(type + " - " + data));
+        context.write(key, new Text(type + " - " + data));
     }
 }

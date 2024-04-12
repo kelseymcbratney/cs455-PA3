@@ -26,13 +26,13 @@ public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
             // Extract the song id and loudness from the first input type
             String songId = fields[SONG_ID_ANALYSIS_INDEX];
             String loudness = fields[LOUDNESS_INDEX];
-            context.write(new Text(songId), new Text("A|" + loudness));
+            context.write(new Text(songId), new Text("A," + loudness));
         } else if (fields.length == 14) {
             // Extract the song name, artist name, and artist id from the second input type
             String songName = fields[TITLE_INDEX];
             String artistName = fields[ARTIST_NAME_INDEX];
             String artistId = fields[ARTIST_ID_INDEX];
-            context.write(new Text(artistId), new Text("B|" + songName + "," + artistName));
+            context.write(new Text(artistId), new Text("B," + songName + "," + artistName));
         }
     }
 }
