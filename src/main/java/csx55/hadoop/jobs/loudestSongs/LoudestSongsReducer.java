@@ -38,7 +38,7 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
 
         // Only output if all parts are non-empty and valid
         if (!artistID.isEmpty() && !songTitle.isEmpty() && !loudness.isEmpty()) {
-            context.write(key, new Text("(" + artistID + ", " + songTitle + ", " + loudness + ")"));
+            context.write(key, new Text(artistID + ", " + songTitle + ", " + loudness));
         }
     }
 }
