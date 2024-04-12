@@ -11,31 +11,27 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
         String songName = null;
         String loudness = null;
         String artistName = null;
-        String type = null;
-        String data = null;
 
         for (Text value : values) {
-            String[] parts = value.toString().split(",");
-            type = parts[0];
-            data = parts[1];
+            String[] parts = value.toString().split(",", 3); // Split into at most three parts
+            String type = parts[0];
+            String data1 = parts[1];
 
-//            if (type.equals("A")) {
-//                if (!data.equals("nan")) { // Filter out NaN values
-//                    loudness = data;
-//                }
-//            } else if (type.equals("B")) {
-//                int commaIndex = data.indexOf(',');
-//                if (commaIndex != -1) {
-//                    songName = data.substring(0, commaIndex);
-//                    artistName = data.substring(commaIndex + 1);
-//                } else {
-//                    songName = data; // Assuming entire data is songName if no comma is present
-//                    artistName = "Unknown"; // Default or null, depending on requirement
-//                }
-//            }
-
+            if (type.equals("A")) {
+                loudness = data1; // Direct assignment of loudness
+            } else if (type.equals("B")) {
+                songName = data1;
+                if (parts.length > 2) { // Check if artist name is available
+                    artistName = parts[2];
+                } else {
+                    artistName = "Unknown"; // Handle missing artist names gracefully
+                }
+            }
         }
 
-        context.write(key, new Text(type + " - " + data));
+        // Only write out to context if we have both a song name and loudness
+        if (songName != null && loudness != null) {
+            context.write(key, new Text(songName + "," + loudness + "," + artistName));
+        }
     }
 }
