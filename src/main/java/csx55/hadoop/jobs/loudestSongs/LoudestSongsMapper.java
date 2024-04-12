@@ -9,30 +9,48 @@ import java.io.IOException;
 import static csx55.hadoop.Constants.Analysis.*;
 import static csx55.hadoop.Constants.Metadata.*;
 
-public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.Path;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
-    private static final int SONG_ID_ANALYSIS_INDEX = 0;
-    private static final int LOUDNESS_INDEX = 1;
-    private static final int TITLE_INDEX = 0;
-    private static final int ARTIST_NAME_INDEX = 1;
-    private static final int ARTIST_ID_INDEX = 2;
+public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
+    private Map<String, String[]> artistMetadata = new HashMap<>();
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+        Path[] cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
+        if (cacheFiles != null && cacheFiles.length > 0) {
+            BufferedReader reader = new BufferedReader(new FileReader(cacheFiles[0].toString()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] fields = line.split("\\|");
+                if (fields.length >= csx55.hadoop.Constants.Metadata.ARTIST_ID_INDEX) {
+                    // Assuming the artist ID is unique and is the key for metadata
+                    artistMetadata.put(fields[csx55.hadoop.Constants.Metadata.ARTIST_ID_INDEX], fields);
+                }
+            }
+            reader.close();
+        }
+    }
 
     @Override
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        // Split the input line into parts
         String[] fields = value.toString().split("\\|");
 
         if (fields.length == 32) {
-            // Extract the song id and loudness from the first input type
             String songId = fields[SONG_ID_ANALYSIS_INDEX];
             String loudness = fields[LOUDNESS_INDEX];
             context.write(new Text(songId), new Text("A," + loudness));
         } else if (fields.length == 14) {
-            // Extract the song name, artist name, and artist id from the second input type
-            String songName = fields[TITLE_INDEX];
-            String artistName = fields[ARTIST_NAME_INDEX];
             String artistId = fields[ARTIST_ID_INDEX];
-            context.write(new Text(artistId), new Text("B," + songName + "," + artistName));
+            String[] metadata = artistMetadata.get(artistId);
+            if (metadata != null) {
+                String songName = metadata[TITLE_INDEX];
+                String artistName = metadata[ARTIST_NAME_INDEX];
+                context.write(new Text(artistId), new Text("B," + songName + "," + artistName));
+            }
         }
     }
 }

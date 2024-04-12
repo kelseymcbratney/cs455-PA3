@@ -3,6 +3,7 @@ package csx55.hadoop;
 import csx55.hadoop.jobs.loudestSongs.*;
 import csx55.hadoop.jobs.songCount.*;
 
+import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -48,6 +49,8 @@ public class JobRunner {
 
     private static boolean runSongCountJob(String[] args) throws Exception {
         Configuration conf = new Configuration();
+        DistributedCache.addCacheFile(new Path(args[1]).toUri(), conf);
+
         Job job = Job.getInstance(conf);
         job.setJarByClass(JobRunner.class);
         job.setJobName("SongCount");
@@ -103,7 +106,6 @@ public class JobRunner {
         job.setJobName("LoudestSongs");
 
         job.setMapperClass(LoudestSongsMapper.class);
-        job.setReducerClass(LoudestSongsReducer.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
