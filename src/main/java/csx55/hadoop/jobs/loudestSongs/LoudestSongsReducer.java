@@ -7,20 +7,23 @@ import java.io.IOException;
 
 public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
     @Override
-    public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException, IOException {
-        String metadata = null;
-        String analysis = null;
+    public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        String artistID = "";
+        String songTitle = "";
+        String loudness = "";
 
         for (Text val : values) {
             if (val.toString().startsWith("ANALYSIS_")) {
-                analysis = val.toString().substring(9);
+                loudness = val.toString().substring(9);
             } else if (val.toString().startsWith("METADATA_")) {
-                metadata = val.toString().substring(9);
+                String[] parts = val.toString().substring(9).split("\\|");
+                artistID = parts[0];
+                songTitle = parts[1];
             }
         }
 
-        if (analysis != null && metadata != null) {
-            context.write(key, new Text(metadata + "|" + analysis));
+        if (!artistID.isEmpty() && !songTitle.isEmpty() && !loudness.isEmpty()) {
+            context.write(key, new Text("(" + artistID + ", " + songTitle + ", " + loudness + ")"));
         }
     }
 }
