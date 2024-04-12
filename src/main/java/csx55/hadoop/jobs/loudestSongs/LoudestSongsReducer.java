@@ -11,7 +11,6 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
         String songName = null;
         String loudness = null;
         String artistName = null;
-        String artistId = null;
 
         for (Text value : values) {
             String[] parts = value.toString().split("\\|");
@@ -24,12 +23,11 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
                 String[] songInfo = data.split(",");
                 songName = songInfo[0];
                 artistName = songInfo[1];
-                artistId = key.toString(); // Since artistId is the key in this case
             }
         }
 
         if (songName != null && loudness != null) {
-            context.write(new Text(artistId), new Text(songName + "," + loudness + "," + artistName));
+            context.write(key, new Text(songName + "," + loudness + "," + artistName));
         }
     }
 }
