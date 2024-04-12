@@ -114,10 +114,38 @@ public class JobRunner {
         FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
         FileOutputFormat.setOutputPath(job, new Path(args[2] + "_loudestSongs"));
 
-        return job.waitForCompletion(true);
+        boolean success = job.waitForCompletion(true);
+
+        if (success) {
+            Job sortJob = Job.getInstance();
+            sortJob.setJarByClass(JobRunner.class); // Ensure JobRunner is your main class
+
+            // Set the new classes for the mapper and reducer
+            sortJob.setMapperClass(SongCountSortedMapper.class);
+            sortJob.setReducerClass(SongCountSortedReducer.class);
+
+            // Setting the number of reduce tasks
+            sortJob.setNumReduceTasks(1); // Only one reducer to ensure global ordering
+
+            // If you want to sort in descending order, use the DecreasingComparator as before
+            sortJob.setSortComparatorClass(LongWritable.DecreasingComparator.class);
+
+            // Set the map output key/value classes according to the mapper's outputs
+            sortJob.setMapOutputKeyClass(LongWritable.class);
+            sortJob.setMapOutputValueClass(Text.class);
+
+            // Set the final output key/value classes according to the reducer's outputs
+            sortJob.setOutputKeyClass(Text.class);
+            sortJob.setOutputValueClass(LongWritable.class);
+
+            FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_loudestSongs"));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_loudestAverageArtist"));
+
+            // Execute the sort job and wait for it to finish
+            success = sortJob.waitForCompletion(true);
+        }
+
+        return success;
 
     }
-
-
-
 }
