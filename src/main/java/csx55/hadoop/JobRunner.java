@@ -106,6 +106,7 @@ public class JobRunner {
         job.setJobName("LoudestSongs");
 
         job.setMapperClass(LoudestSongsMapper.class);
+        job.setReducerClass(LoudestSongsReducer.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
