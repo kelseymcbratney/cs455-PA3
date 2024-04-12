@@ -19,6 +19,7 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
                 String[] parts = val.toString().substring(9).split("\\|");
                 artistID = parts[0];
                 songTitle = parts[1];
+                System.out.println("Artist ID: " + artistID + ", Song Title: " + songTitle + ", Loudness: " + loudness  + "\n");
             }
         }
 
