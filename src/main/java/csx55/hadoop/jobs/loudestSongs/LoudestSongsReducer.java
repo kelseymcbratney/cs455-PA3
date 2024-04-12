@@ -13,16 +13,30 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
         String loudness = "";
 
         for (Text val : values) {
-            if (val.toString().startsWith("ANALYSIS_")) {
-                loudness = val.toString().substring(9);
-            } else if (val.toString().startsWith("METADATA_")) {
-                String[] parts = val.toString().substring(9).split("\\|");
-                artistID = parts[0];
-                songTitle = parts[1];
-                System.out.println("Artist ID: " + artistID + ", Song Title: " + songTitle + ", Loudness: " + loudness  + "\n");
+            String data = val.toString();
+            try {
+                if (data.startsWith("ANALYSIS_")) {
+                    // Extract loudness, assuming it follows the tag directly
+                    loudness = data.substring(9);
+                } else if (data.startsWith("METADATA_")) {
+                    // Check if data is correctly formatted
+                    String[] parts = data.substring(9).split("\\|");
+                    if (parts.length >= 2) { // Ensure there are at least two parts: artistID and songTitle
+                        artistID = parts[0];
+                        songTitle = parts[1];
+                    } else {
+                        // Log or handle incomplete metadata records
+                        System.err.println("Incomplete METADATA record for key " + key.toString() + ": " + data);
+                    }
+                }
+            } catch (Exception e) {
+                // Log the exception with context
+                System.err.println("Error processing record for key " + key.toString() + ": " + data);
+                e.printStackTrace();
             }
         }
 
+        // Only output if all parts are non-empty and valid
         if (!artistID.isEmpty() && !songTitle.isEmpty() && !loudness.isEmpty()) {
             context.write(key, new Text("(" + artistID + ", " + songTitle + ", " + loudness + ")"));
         }
