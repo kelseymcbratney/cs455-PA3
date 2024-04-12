@@ -17,7 +17,7 @@ public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
     protected void setup(Context context) {
         // Determine which file the mapper is currently processing
         FileSplit split = (FileSplit) context.getInputSplit();
-        identifier = split.getPath().getName(); // Gets the filename
+        identifier = split.getPath().getName();
     }
 
     @Override
