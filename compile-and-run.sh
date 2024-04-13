@@ -6,6 +6,7 @@ hadoop fs -rm -r /PA3/output/
 hadoop fs -rm -r /PA3/output_songCount/
 hadoop fs -rm -r /PA3/output_loudestSongs/
 hadoop fs -rm -r /PA3/output_loudestAverageArtist/
+hadoop fs -rm -r /PA3/output_loudestAverageArtistSorted/
 
 rm JobRunner.jar
 
