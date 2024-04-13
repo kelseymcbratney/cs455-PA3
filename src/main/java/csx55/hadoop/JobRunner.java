@@ -136,6 +136,22 @@ public class JobRunner {
             success = sortJob.waitForCompletion(true);
         }
 
+        if (success) {
+            Job sortJob = Job.getInstance();
+            sortJob.setJarByClass(JobRunner.class); // Ensure
+
+            sortJob.setMapperClass(LoudestAverageArtistSortedMapper.class);
+            sortJob.setReducerClass(LoudestAverageArtistSortedReducer.class);
+
+            sortJob.setOutputKeyClass(DoubleWritable.class);
+            sortJob.setOutputValueClass(Text.class);
+
+            FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_loudestAverageArtist"));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_loudestAverageArtistSorted"));
+
+            success = sortJob.waitForCompletion(true);
+        }
+
         return success;
 
     }
