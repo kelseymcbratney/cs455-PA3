@@ -4,12 +4,15 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class LoudestAverageArtistMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
 
     @Override
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] parts = value.toString().split(", ");
+
+        System.out.println(Arrays.toString(parts));
         if (parts.length >= 3) {
             try {
                 String artistID = parts[0].trim();
