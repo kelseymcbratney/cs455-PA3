@@ -121,8 +121,8 @@ public class JobRunner {
             sortJob.setJarByClass(JobRunner.class); // Ensure JobRunner is your main class
 
             // Set the new classes for the mapper and reducer
-            sortJob.setMapperClass(SongCountSortedMapper.class);
-            sortJob.setReducerClass(SongCountSortedReducer.class);
+            sortJob.setMapperClass(LoudestAverageArtistMapper.class);
+            sortJob.setReducerClass(LoudestAverageArtistReducer.class);
 
             // Setting the number of reduce tasks
             sortJob.setNumReduceTasks(1); // Only one reducer to ensure global ordering
