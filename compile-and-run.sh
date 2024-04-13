@@ -5,7 +5,7 @@ git pull
 hadoop fs -rm -r /PA3/output/
 hadoop fs -rm -r /PA3/output_songCount/
 hadoop fs -rm -r /PA3/output_loudestSongs/
-hadoop fs -rm -r /PA3/_loudestAverageArtist/
+hadoop fs -rm -r /PA3/output_loudestAverageArtist/
 
 rm JobRunner.jar
 
