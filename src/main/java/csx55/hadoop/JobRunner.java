@@ -5,6 +5,7 @@ import csx55.hadoop.jobs.songCount.*;
 
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -124,19 +125,9 @@ public class JobRunner {
             sortJob.setMapperClass(LoudestAverageArtistMapper.class);
             sortJob.setReducerClass(LoudestAverageArtistReducer.class);
 
-            // Setting the number of reduce tasks
-            sortJob.setNumReduceTasks(1); // Only one reducer to ensure global ordering
-
-            // If you want to sort in descending order, use the DecreasingComparator as before
-            sortJob.setSortComparatorClass(LongWritable.DecreasingComparator.class);
-
-            // Set the map output key/value classes according to the mapper's outputs
-            sortJob.setMapOutputKeyClass(LongWritable.class);
-            sortJob.setMapOutputValueClass(Text.class);
-
             // Set the final output key/value classes according to the reducer's outputs
             sortJob.setOutputKeyClass(Text.class);
-            sortJob.setOutputValueClass(LongWritable.class);
+            sortJob.setOutputValueClass(DoubleWritable.class);
 
             FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_loudestSongs"));
             FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_loudestAverageArtist"));
