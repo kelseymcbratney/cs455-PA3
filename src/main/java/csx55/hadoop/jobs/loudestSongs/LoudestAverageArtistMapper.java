@@ -11,10 +11,9 @@ public class LoudestAverageArtistMapper extends Mapper<LongWritable, Text, Text,
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + loudness));
         String[] parts = value.toString().split(", ");
-        String[] keyParts = parts[0].split("\\|");
+        String[] keyParts = key.toString().split("\\|");
         if (parts.length >= 3) { // Ensure there are enough parts to avoid ArrayIndexOutOfBoundsException
             try {
-                String artistID = parts[0];
                 String artistName = parts[1];
                 String loudness = parts[2];
                 context.write(new Text(keyParts[1]), new Text(artistName + ", " + loudness));
