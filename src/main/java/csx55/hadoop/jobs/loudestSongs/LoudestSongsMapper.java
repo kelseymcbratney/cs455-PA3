@@ -23,6 +23,7 @@ public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
         String[] parts = value.toString().split("\\|");
         String songId = "";
         String outputValue = "";
+        String artistID = "";
 
         if (identifier.contains("analysis")) {
             // Assuming 'analysis' file contains the SONG_ID_ANALYSIS and other fields
@@ -34,13 +35,13 @@ public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
             // Assuming 'metadata' file contains the SONG_ID and other fields
             songId = parts[Constants.Metadata.SONG_ID_INDEX];
             // Extracting artistID and songTitle
-            String artistID = parts[Constants.Metadata.ARTIST_ID_INDEX];
+            artistID = parts[Constants.Metadata.ARTIST_ID_INDEX];
             String artistName = parts[Constants.Metadata.ARTIST_NAME_INDEX];
             String songTitle = parts[Constants.Metadata.TITLE_INDEX];
-            outputValue = "METADATA_" + artistID + "|" + artistName +"|" + songTitle;
+            outputValue = "METADATA_" + "|" + artistName +"|" + songTitle;
         }
 
-        context.write(new Text(songId), new Text(outputValue));
+        context.write(new Text(artistID), new Text(outputValue));
     }
 }
 
