@@ -17,7 +17,7 @@ public class LoudestAverageArtistReducer extends Reducer<Text, Text, Text, Text>
         double sum = 0;
         int count = 0;
         for (Text val : values) {
-            String parts[] = val.toString().split(", ");
+            String[] parts = val.toString().split(", ");
             sum += Double.parseDouble(parts[1]);
             count++;
             artistName = parts[0];
