@@ -5,14 +5,14 @@ import org.apache.hadoop.mapreduce.*;
 
 import java.io.IOException;
 
-public class LoudestAverageArtistReducer extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
+public class LoudestAverageArtistReducer extends Reducer<Text, Text, Text, DoubleWritable> {
 
     @Override
-    public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
+    public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         double sum = 0;
         int count = 0;
-        for (DoubleWritable val : values) {
-            sum += val.get();
+        for (Text val : values) {
+            sum += Double.parseDouble(val.toString().split(", ")[1]);
             count++;
         }
         double average = count > 0 ? sum / count : 0;

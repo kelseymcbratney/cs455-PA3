@@ -11,6 +11,7 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
         String artistID = "";
         String songTitle = "";
         String loudness = "";
+        String artistName = "";
 
         for (Text val : values) {
             String data = val.toString();
@@ -23,7 +24,8 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
                     String[] parts = data.substring(9).split("\\|");
                     if (parts.length >= 2) { // Ensure there are at least two parts: artistID and songTitle
                         artistID = parts[0];
-                        songTitle = parts[1];
+                        artistName = parts[1];
+                        songTitle = parts[2];
                     } else {
                         // Log or handle incomplete metadata records
                         System.err.println("Incomplete METADATA record for key " + key.toString() + ": " + data);
@@ -38,7 +40,7 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
 
         // Only output if all parts are non-empty and valid
         if (!artistID.isEmpty() && !songTitle.isEmpty() && !loudness.isEmpty()) {
-            context.write(key, new Text(artistID + ", " + songTitle + ", " + loudness));
+            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + loudness));
         }
     }
 }

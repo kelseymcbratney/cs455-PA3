@@ -35,8 +35,9 @@ public class LoudestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
             songId = parts[Constants.Metadata.SONG_ID_INDEX];
             // Extracting artistID and songTitle
             String artistID = parts[Constants.Metadata.ARTIST_ID_INDEX];
+            String artistName = parts[Constants.Metadata.ARTIST_NAME_INDEX];
             String songTitle = parts[Constants.Metadata.TITLE_INDEX];
-            outputValue = "METADATA_" + artistID + "|" + songTitle;
+            outputValue = "METADATA_" + artistID + "|" + artistName +"|" + songTitle;
         }
 
         context.write(new Text(songId), new Text(outputValue));

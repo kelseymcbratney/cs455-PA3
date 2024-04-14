@@ -127,7 +127,7 @@ public class JobRunner {
 
             // Set the final output key/value classes according to the reducer's outputs
             sortJob.setOutputKeyClass(Text.class);
-            sortJob.setOutputValueClass(DoubleWritable.class);
+            sortJob.setOutputValueClass(Text.class);
 
             FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_loudestSongs"));
             FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_loudestAverageArtist"));
