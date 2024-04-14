@@ -22,9 +22,10 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
                 } else if (data.startsWith("METADATA_")) {
                     // Check if data is correctly formatted
                     String[] parts = data.substring(9).split("\\|");
-                    if (parts.length >= 1) { // Ensure there are at least two parts: artistID and songTitle
-                        artistName = parts[0];
-                        songTitle = parts[1];
+                    if (parts.length >= 2) { // Ensure there are at least two parts: artistID and songTitle
+                        artistID = parts[0];
+                        artistName = parts[1];
+                        songTitle = parts[2];
                     } else {
                         // Log or handle incomplete metadata records
                         System.err.println("Incomplete METADATA record for key " + key.toString() + ": " + data);
@@ -38,8 +39,8 @@ public class LoudestSongsReducer extends Reducer<Text, Text, Text, Text> {
         }
 
         // Only output if all parts are non-empty and valid
-        if (!songTitle.isEmpty() && !loudness.isEmpty()) {
-            context.write(key, new Text(artistName + ", " + songTitle + ", " + loudness));
+        if (!artistID.isEmpty() && !songTitle.isEmpty() && !loudness.isEmpty()) {
+            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + loudness));
         }
     }
 }
