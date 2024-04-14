@@ -13,14 +13,13 @@ public class LoudestAverageArtistReducer extends Reducer<Text, Text, Text, Text>
         String artistName = "";
         String artistID = "";
         String songTitle = "";
-        Double loudness = 0.0;
         double sum = 0;
         int count = 0;
         for (Text val : values) {
             String[] parts = val.toString().split(", ");
-            sum += Double.parseDouble(parts[1]);
+            sum += Double.parseDouble(parts[3]);
             count++;
-            artistName = parts[0];
+            artistName = parts[1];
         }
         double average = count > 0 ? sum / count : 0;
         context.write(key, new Text(artistName + average));
