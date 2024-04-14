@@ -1,5 +1,6 @@
 package csx55.hadoop;
 
+import csx55.hadoop.jobs.hotttnesss.*;
 import csx55.hadoop.jobs.loudestSongs.*;
 import csx55.hadoop.jobs.songCount.*;
 
@@ -31,6 +32,9 @@ public class JobRunner {
                 if (!runLoudestSongsJob(args)) {
                     System.exit(1);
                 }
+                if (!runTopHotttnesss(args)) {
+                    System.exit(1);
+                }
                 break;
             case "1":
                 if (!runSongCountJob(args)) {
@@ -42,6 +46,10 @@ public class JobRunner {
                     System.exit(1);
                 }
                 break;
+            case "3":
+                if (!runTopHotttnesss(args)) {
+                    System.exit(1);
+                }
             default:
                 System.err.println("Invalid job type. Available options:\n1. Run All Jobs, \n2. SongCount");
                 System.exit(1);
@@ -155,4 +163,41 @@ public class JobRunner {
         return success;
 
     }
+
+    private static boolean runTopHotttnesss(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
+        job.setJarByClass(JobRunner.class);
+        job.setJobName("TopHotttnesss");
+
+        job.setMapperClass(hotttnesssSongMapper.class);
+        job.setReducerClass(hotttnesssSongReducer.class);
+
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+        FileOutputFormat.setOutputPath(job, new Path(args[2] + "_topHotttnesss"));
+
+        boolean success = job.waitForCompletion(true);
+
+        if (success) {
+            Job sortJob = Job.getInstance();
+            sortJob.setJarByClass(JobRunner.class);
+
+            sortJob.setMapperClass(hotttnesssSongSortedMapper.class);
+            sortJob.setReducerClass(hotttnesssSongSortedReducer.class);
+
+            sortJob.setOutputKeyClass(DoubleWritable.class);
+            sortJob.setOutputValueClass(Text.class);
+
+            FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topHotttnesss"));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topHotttnesssSorted"));
+
+            success = sortJob.waitForCompletion(true);
+
+    }
+        return success;
 }
+}
+
