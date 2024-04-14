@@ -9,13 +9,18 @@ public class LoudestAverageArtistReducer extends Reducer<Text, Text, Text, Text>
 
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        //context.write(new Text(artistID), new Text(artistName + ", " + loudness));
         String artistName = "";
+        String artistID = "";
+        String songTitle = "";
+        Double loudness = 0.0;
         double sum = 0;
         int count = 0;
         for (Text val : values) {
-            sum += Double.parseDouble(val.toString().split(", ")[1]);
+            String parts[] = val.toString().split(", ");
+            sum += Double.parseDouble(parts[1]);
             count++;
-            artistName = val.toString().split(", ")[0];
+            artistName = parts[0];
         }
         double average = count > 0 ? sum / count : 0;
         context.write(key, new Text(artistName + average));
