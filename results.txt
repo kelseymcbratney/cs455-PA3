@@ -3,3 +3,30 @@ AROIHOI122988FEB8E      Mario Rosenstock        13
 
 Q2
 ARRTJ3W1187B993212      Power Pill Fist 0.566
+
+Q3
+SOULTKQ12AB018A183      Nothin' On You [feat. Bruno Mars] (Album Version) - 1.0
+
+Q4
+
+
+
+Q7:
+The various segment vectors they list all have different sizes per song. So it's really hard to find average ones across all of them. I tried zero-padding them to the max sizes but that made it really slow, because the largest songs are like 10x the average size.
+So instead, i'm reshaping all vectors to the average size:
+first I find the average size per segment type
+then i'm zero-padding/truncating each song's segments to the average size of the corresponding type.
+I omit the _start segment types from the zero padding (i still truncate them if theyre too big), since it wouldnt make sense for those to have zeros—they're monotonically increasing seconds timestamps.
+then I find the average value of each index of each segment type.
+then i collect these back into an average vector for each segment type
+ like 2
+
+
+Q8, I'm using the outputs of Q7, then i compute distance from these averages to every song, and average them per artist. Furthest from average is most unique, closest is most generic. Details:
+i get the average vectors for each segment type from Q7 output
+i standardize these so the values are all on the same range
+for each song
+i standardize, and then compute the total distance to all these average segment vectors using sum of euclidean distances.
+i zero-pad either the song vector or the average vector, so they're the same size. This is basically padding with means. This should penalized song vectors that are shorter or longer than the mean.
+then i average these distance values per artist
+pick top1, bottom1

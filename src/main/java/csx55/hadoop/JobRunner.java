@@ -1,6 +1,7 @@
 package csx55.hadoop;
 
 import csx55.hadoop.jobs.hotttnesss.*;
+import csx55.hadoop.jobs.longestFade.*;
 import csx55.hadoop.jobs.loudestSongs.*;
 import csx55.hadoop.jobs.songCount.*;
 
@@ -35,6 +36,9 @@ public class JobRunner {
                 if (!runTopHotttnesss(args)) {
                     System.exit(1);
                 }
+                if (!runTopFadeIn(args)) {
+                    System.exit(1);
+                }
                 break;
             case "1":
                 if (!runSongCountJob(args)) {
@@ -48,6 +52,10 @@ public class JobRunner {
                 break;
             case "3":
                 if (!runTopHotttnesss(args)) {
+                    System.exit(1);
+                }
+            case "4":
+                if (!runTopFadeIn(args)) {
                     System.exit(1);
                 }
             default:
@@ -198,6 +206,27 @@ public class JobRunner {
 
     }
         return success;
+}
+
+
+private static boolean runTopFadeIn(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf);
+    job.setJarByClass(JobRunner.class);
+    job.setJobName("TopFadeIn");
+
+    job.setMapperClass(LongestFadeMapper.class);
+    job.setReducerClass(LongestFadeReducer.class);
+
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+    FileOutputFormat.setOutputPath(job, new Path(args[2] + "_topFadeIn"));
+
+    boolean success = job.waitForCompletion(true);
+
+    return success;
 }
 }
 
