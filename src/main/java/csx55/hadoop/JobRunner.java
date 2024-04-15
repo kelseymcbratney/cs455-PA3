@@ -226,6 +226,21 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
 
     boolean success = job.waitForCompletion(true);
 
+    if(success){
+        Job sortJob = Job.getInstance();
+        sortJob.setJarByClass(JobRunner.class);
+
+        sortJob.setMapperClass(LongestFadeSortedMapper.class);
+        sortJob.setReducerClass(LongestFadeSortedReducer.class);
+
+        sortJob.setOutputKeyClass(DoubleWritable.class);
+        sortJob.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeIn"));
+        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+
+        success = sortJob.waitForCompletion(true);
+    }
     return success;
 }
 }
