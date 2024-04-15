@@ -14,11 +14,12 @@ public class hotttnesssSongReducer extends Reducer<Text, Text, Text, Text> {
 
         for (Text val : values) {
             if (val.toString().startsWith("ANALYSIS_")) {
+                String[] parts = val.toString().substring(9).split("\\|");
+                songTitle = parts[0];
                 hotttnesss = val.toString().substring(9);
             } else if (val.toString().startsWith("METADATA_")) {
                 String[] metaParts = val.toString().substring(9).split("\\|");
                 artistName = metaParts[0];
-                songTitle = metaParts[1];
             }
         }
 
