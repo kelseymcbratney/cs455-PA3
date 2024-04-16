@@ -1,26 +1,24 @@
 package csx55.hadoop.jobs.longestFade;
 
 import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.*;
 
 import java.io.IOException;
 
-public class LongestFadeSortedMapper extends Mapper<LongWritable, Text, DoubleWritable, Text> {
+public class LongestFadeSortedMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        // Input from previous job: ID, artistID, artistName, songTitle, fadeTime
-        String[] parts = value.toString().split(",");
-        if (parts.length == 5) {  // Ensure we have exactly five parts
-            String artistName = parts[2].trim();
-            String songTitle = parts[3].trim();
-            double fadeTime;
+        String[] parts = value.toString().split(", ");
+        if (parts.length >= 3) { // Ensure there are enough parts to avoid ArrayIndexOutOfBoundsException
             try {
-                fadeTime = Double.parseDouble(parts[4].trim());
-                // Emit negative to sort in descending order
-                context.write(new DoubleWritable(-fadeTime), new Text(artistName + " - " + songTitle));
+                String artistID = parts[0].trim().split("\t")[1].trim(); // Correctly parse the artistID
+                String artistName = parts[1].trim(); // Correctly parse the artistName
+                double fadein = Double.parseDouble(parts[3]); // Correctly parse the loudness as double
+                context.write(new Text(artistID), new Text(artistName + ", " + fadein));
             } catch (NumberFormatException e) {
-                System.err.println("Error parsing fade time: " + parts[4]);
+                // Log error to indicate a parsing failure
+                System.err.println("Error parsing loudness in SongCountSortedMapper: " + parts[2]);
             }
         }
     }
