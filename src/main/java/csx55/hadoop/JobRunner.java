@@ -233,7 +233,7 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
         sortJob.setMapperClass(LongestFadeSortedMapper.class);
         sortJob.setReducerClass(LongestFadeSortedReducer.class);
 
-        sortJob.setOutputKeyClass(DoubleWritable.class);
+        sortJob.setOutputKeyClass(Text.class);
         sortJob.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeIn"));
