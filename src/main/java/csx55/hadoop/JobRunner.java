@@ -55,10 +55,12 @@ public class JobRunner {
                 if (!runTopHotttnesss(args)) {
                     System.exit(1);
                 }
+                break;
             case "4":
                 if (!runTopFadeIn(args)) {
                     System.exit(1);
                 }
+                break;
             default:
                 System.err.println("Invalid job type. Available options:\n1. Run All Jobs, \n2. SongCount");
                 System.exit(1);

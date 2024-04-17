@@ -34,7 +34,6 @@ public class LongestFadeReducer extends Reducer<Text, Text, Text, Text> {
                     if (parts.length >= 2) { // Ensure there are at least two parts: artistID and songTitle
                         artistID = parts[0];
                         artistName = parts[1];
-                        songTitle = parts[2];
                     } else {
                         // Log or handle incomplete metadata records
                         System.err.println("Incomplete METADATA record for key " + key.toString() + ": " + data);
@@ -48,7 +47,7 @@ public class LongestFadeReducer extends Reducer<Text, Text, Text, Text> {
         }
 
         // Only output if all parts are non-empty and valid
-        if (!artistID.isEmpty() && !songTitle.isEmpty() && !endOfFadein.isEmpty() && !duration.isEmpty() && !startOfFadeOut.isEmpty()){
+        if (!artistID.isEmpty() && !artistName.isEmpty() && !endOfFadein.isEmpty() && !duration.isEmpty() && !startOfFadeOut.isEmpty()){
             context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + endOfFadein + ", " + duration + ", " + startOfFadeOut));
         }
     }
