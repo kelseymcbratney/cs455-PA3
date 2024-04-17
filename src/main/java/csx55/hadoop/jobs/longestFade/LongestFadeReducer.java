@@ -48,7 +48,7 @@ public class LongestFadeReducer extends Reducer<Text, Text, Text, Text> {
 
         // Only output if all parts are non-empty and valid
         if (!artistID.isEmpty() && !artistName.isEmpty() && !endOfFadein.isEmpty() && !duration.isEmpty() && !startOfFadeOut.isEmpty()){
-            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + endOfFadein + ", " + duration + ", " + startOfFadeOut));
+            context.write(new Text(artistID), new Text(key + ", " + artistName + ", " + songTitle + ", " + endOfFadein + ", " + duration + ", " + startOfFadeOut));
         }
     }
 }
