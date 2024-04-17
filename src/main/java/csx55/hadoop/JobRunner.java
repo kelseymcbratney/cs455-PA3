@@ -2,6 +2,7 @@ package csx55.hadoop;
 
 import csx55.hadoop.jobs.hotttnesss.*;
 import csx55.hadoop.jobs.longestFade.*;
+import csx55.hadoop.jobs.longestSongs.*;
 import csx55.hadoop.jobs.loudestSongs.*;
 import csx55.hadoop.jobs.songCount.*;
 
@@ -226,22 +227,41 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
 
     boolean success = job.waitForCompletion(true);
 
-    if(success){
-        Job sortJob = Job.getInstance();
-        sortJob.setJarByClass(JobRunner.class);
-
-        sortJob.setMapperClass(LongestFadeSortedMapper.class);
-        sortJob.setReducerClass(LongestFadeSortedReducer.class);
-
-        sortJob.setOutputKeyClass(Text.class);
-        sortJob.setOutputValueClass(Text.class);
-
-        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeIn"));
-        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
-
-        success = sortJob.waitForCompletion(true);
-    }
+//    if(success){
+//        Job sortJob = Job.getInstance();
+//        sortJob.setJarByClass(JobRunner.class);
+//
+//        sortJob.setMapperClass(LongestFadeSortedMapper.class);
+//        sortJob.setReducerClass(LongestFadeSortedReducer.class);
+//
+//        sortJob.setOutputKeyClass(Text.class);
+//        sortJob.setOutputValueClass(Text.class);
+//
+//        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeIn"));
+//        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+//
+//        success = sortJob.waitForCompletion(true);
+//    }
     return success;
+}
+
+
+private static boolean runSongLongestSong(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf);
+    job.setJarByClass(JobRunner.class);
+    job.setJobName("SongLongestSong");
+
+    job.setMapperClass(LongestSongsMapper.class);
+    job.setReducerClass(LongestSongsReducer.class);
+
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+    FileOutputFormat.setOutputPath(job, new Path(args[2] + "_songLongestSong"));
+
+    return job.waitForCompletion(true);
 }
 }
 

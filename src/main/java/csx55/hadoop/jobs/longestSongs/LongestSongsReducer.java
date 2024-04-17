@@ -1,4 +1,4 @@
-package csx55.hadoop.jobs.longestFade;
+package csx55.hadoop.jobs.longestSongs;
 
 import org.apache.hadoop.io.Text;
 
@@ -6,28 +6,20 @@ import java.io.IOException;
 
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class LongestFadeReducer extends Reducer<Text, Text, Text, Text> {
+public class LongestSongsReducer extends Reducer<Text, Text, Text, Text> {
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         String artistID = "";
         String songTitle = "";
-        String endOfFadein = "";
+        String fadein = "";
         String artistName = "";
-        String duration = "";
-        String startOfFadeOut = "";
 
         for (Text val : values) {
             String data = val.toString();
             try {
                 if (data.startsWith("ANALYSIS_")) {
-                    String parts[] = data.substring(9).split("\\|");
-                    if (parts.length >= 3) {
-                        endOfFadein = parts[0];
-                        duration = parts[1];
-                        startOfFadeOut = parts[2];
-                    } else {
-                        System.err.println("Incomplete ANALYSIS record for key " + key.toString() + ": " + data);
-                    }
+                    // Extract loudness, assuming it follows the tag directly
+                    fadein = data.substring(9);
                 } else if (data.startsWith("METADATA_")) {
                     // Check if data is correctly formatted
                     String[] parts = data.substring(9).split("\\|");
@@ -48,8 +40,8 @@ public class LongestFadeReducer extends Reducer<Text, Text, Text, Text> {
         }
 
         // Only output if all parts are non-empty and valid
-        if (!artistID.isEmpty() && !songTitle.isEmpty() && !endOfFadein.isEmpty() && !duration.isEmpty() && !startOfFadeOut.isEmpty()){
-            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + endOfFadein + ", " + duration + ", " + startOfFadeOut));
+        if (!artistID.isEmpty() && !songTitle.isEmpty() && !fadein.isEmpty()) {
+            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + fadein));
         }
     }
 }
