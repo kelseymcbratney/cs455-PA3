@@ -1,12 +1,13 @@
 package csx55.hadoop.jobs.longestFade;
 
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
 
-public class LongestFadeSortedReducer extends Reducer<Text, Text, Text, Text> {
+public class LongestFadeSortedReducer extends Reducer<Text, Text, DoubleWritable, Text> {
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         double totalFadeTime = 0;
@@ -19,7 +20,8 @@ public class LongestFadeSortedReducer extends Reducer<Text, Text, Text, Text> {
 
         if (count > 0) {
             double averageFadeTime = totalFadeTime / count;
-            context.write(key, new Text(String.format("%.2f", averageFadeTime)));
+            // Emit negative to sort in descending order
+            context.write(new DoubleWritable(-averageFadeTime), key);
         }
     }
 }

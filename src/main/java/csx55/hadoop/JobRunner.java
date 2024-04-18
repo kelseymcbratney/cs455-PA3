@@ -12,6 +12,8 @@ import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.conf.Configuration;
@@ -236,11 +238,27 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
         sortJob.setMapperClass(LongestFadeSortedMapper.class);
         sortJob.setReducerClass(LongestFadeSortedReducer.class);
 
-        sortJob.setOutputKeyClass(Text.class);
+        sortJob.setOutputKeyClass(DoubleWritable.class);
         sortJob.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeIn"));
         FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+
+        success = sortJob.waitForCompletion(true);
+    }
+
+    if (success){
+        Job sortJob = Job.getInstance();
+        sortJob.setJarByClass(JobRunner.class);
+
+        sortJob.setMapperClass(Mapper.class);
+        sortJob.setReducerClass(Reducer.class);
+
+        sortJob.setOutputKeyClass(DoubleWritable.class);
+        sortJob.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInOrder"));
 
         success = sortJob.waitForCompletion(true);
     }
