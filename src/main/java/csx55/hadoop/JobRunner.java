@@ -251,11 +251,13 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
         Job sortJob = Job.getInstance();
         sortJob.setJarByClass(JobRunner.class);
 
-        sortJob.setMapperClass(Mapper.class);
-        sortJob.setReducerClass(Reducer.class);
+        job.setMapperClass(Mapper.class);
+        job.setReducerClass(Reducer.class);
 
-        sortJob.setOutputKeyClass(DoubleWritable.class);
-        sortJob.setOutputValueClass(Text.class);
+        job.setMapOutputKeyClass(DoubleWritable.class);
+        job.setMapOutputValueClass(Text.class);
+        job.setOutputKeyClass(DoubleWritable.class);
+        job.setOutputValueClass(Text.class);
 
         FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
         FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInOrder"));
