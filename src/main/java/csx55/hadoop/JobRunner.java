@@ -212,59 +212,65 @@ public class JobRunner {
 }
 
 
-private static boolean runTopFadeIn(String[] args) throws Exception {
-    Configuration conf = new Configuration();
-    Job job = Job.getInstance(conf);
-    job.setJarByClass(JobRunner.class);
-    job.setJobName("TopFadeIn");
+    private static boolean runTopFadeIn(String[] args) throws Exception {
+        Configuration conf = new Configuration();
 
-    job.setMapperClass(LongestFadeMapper.class);
-    job.setReducerClass(LongestFadeReducer.class);
+        // First Job: Initial Fade Time Processing
+        Job job = Job.getInstance(conf);
+        job.setJarByClass(JobRunner.class);
+        job.setJobName("TopFadeIn");
 
-    job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(Text.class);
+        job.setMapperClass(LongestFadeMapper.class);
+        job.setReducerClass(LongestFadeReducer.class);
 
-    FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
-    FileOutputFormat.setOutputPath(job, new Path(args[2] + "_topFadeIn"));
-
-    boolean success = job.waitForCompletion(true);
-
-    if(success){
-        Job combinedJob = Job.getInstance();
-        combinedJob.setJarByClass(JobRunner.class);
-
-        combinedJob.setMapperClass(LongestFadeCombinedMapper.class);
-        combinedJob.setReducerClass(LongestFadeCombinedReducer.class);
-
-        combinedJob.setOutputKeyClass(Text.class);
-        combinedJob.setOutputValueClass(Text.class);
-
-        FileInputFormat.addInputPath(combinedJob, new Path(args[2] + "_topFadeIn"));
-        FileOutputFormat.setOutputPath(combinedJob, new Path(args[2] + "_topFadeInCombined"));
-
-        success = combinedJob.waitForCompletion(true);
-    }
-
-    if (success){
-        Job sortJob = Job.getInstance();
-        sortJob.setJarByClass(JobRunner.class);
-
-        job.setMapperClass(LongestFadeSortedMapper.class);
-        job.setReducerClass(LongestFadeSortedReducer.class);
-
-        job.setMapOutputKeyClass(DoubleWritable.class);
-        job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(DoubleWritable.class);
+        job.setOutputValueClass(Text.class);
 
+        FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+        FileOutputFormat.setOutputPath(job, new Path(args[2] + "_topFadeIn"));
 
-        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeInCombined"));
-        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+        boolean success = job.waitForCompletion(true);
 
-        success = sortJob.waitForCompletion(true);
+        if (success) {
+            // Second Job: Combining Fade Times
+            Job combinedJob = Job.getInstance(conf);
+            combinedJob.setJarByClass(JobRunner.class);
+            combinedJob.setJobName("TopFadeInCombined");
+
+            combinedJob.setMapperClass(LongestFadeCombinedMapper.class);
+            combinedJob.setReducerClass(LongestFadeCombinedReducer.class);
+
+            combinedJob.setOutputKeyClass(Text.class);
+            combinedJob.setOutputValueClass(Text.class);
+
+            FileInputFormat.setInputPaths(combinedJob, new Path(args[2] + "_topFadeIn"));
+            FileOutputFormat.setOutputPath(combinedJob, new Path(args[2] + "_topFadeInCombined"));
+
+            success = combinedJob.waitForCompletion(true);
+        }
+
+        if (success) {
+            // Third Job: Sorting Combined Results
+            Job sortJob = Job.getInstance(conf);
+            sortJob.setJarByClass(JobRunner.class);
+            sortJob.setJobName("TopFadeInSorted");
+
+            sortJob.setMapperClass(LongestFadeSortedMapper.class);
+            sortJob.setReducerClass(LongestFadeSortedReducer.class);
+
+            sortJob.setMapOutputKeyClass(DoubleWritable.class);
+            sortJob.setMapOutputValueClass(Text.class);
+            sortJob.setOutputKeyClass(Text.class);
+            sortJob.setOutputValueClass(DoubleWritable.class);
+
+            FileInputFormat.setInputPaths(sortJob, new Path(args[2] + "_topFadeInCombined"));
+            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+
+            success = sortJob.waitForCompletion(true);
+        }
+
+        return success;
     }
-    return success;
-}
 
 
 private static boolean runSongLongestSong(String[] args) throws Exception {
