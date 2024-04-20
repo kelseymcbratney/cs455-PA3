@@ -25,7 +25,7 @@ public class LongestFadeSortedReducer extends Reducer<Text, Text, DoubleWritable
 
         if (count > 0) {
             double averageFadeTime = totalFadeTime / count;
-            // Emit negative to sort in descending order
+            key = new Text(key.toString().split("\t")[0]);
             context.write(new DoubleWritable(-averageFadeTime), new Text(key + ", " + artistName));
         }
     }
