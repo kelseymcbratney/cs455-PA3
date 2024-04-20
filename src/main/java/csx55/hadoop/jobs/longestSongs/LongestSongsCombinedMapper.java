@@ -9,7 +9,7 @@ public class LongestSongsCombinedMapper extends Mapper<LongWritable, Text, Doubl
     @Override
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] parts = value.toString().split(",");
-        if (parts.length >= 6) {
+        if (parts.length >= 4) {
             String artistID = parts[0].trim();
             String artistName = parts[1].trim();
             String songTitle = parts[2].trim();
