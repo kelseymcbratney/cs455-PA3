@@ -10,8 +10,9 @@ hadoop fs -rm -r /PA3/output_loudestAverageArtistSorted/
 hadoop fs -rm -r /PA3/output_topHotttnesss
 hadoop fs -rm -r /PA3/output_topHotttnesssSorted
 hadoop fs -rm -r /PA3/output_topFadeIn
+hadoop fs -rm -r /PA3/output_topFadeInCombined
 hadoop fs -rm -r /PA3/output_topFadeInSorted
-hadoop fs -rm -r /PA3/output_topFadeInOrder
+
 
 rm JobRunner.jar
 
