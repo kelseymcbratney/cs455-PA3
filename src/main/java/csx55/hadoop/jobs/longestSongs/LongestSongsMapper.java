@@ -28,8 +28,8 @@ public class LongestSongsMapper extends Mapper<LongWritable, Text, Text, Text> {
             // Assuming 'analysis' file contains the SONG_ID_ANALYSIS and other fields
             songId = parts[Constants.Analysis.SONG_ID_ANALYSIS_INDEX];
             // Extracting loudness
-            String fadein = parts[Constants.Analysis.END_OF_FADE_IN_INDEX];
-            outputValue = "ANALYSIS_" + fadein;
+            String duration = parts[Constants.Analysis.DURATION_INDEX];
+            outputValue = "ANALYSIS_" + duration;
         } else {
             // Assuming 'metadata' file contains the SONG_ID and other fields
             songId = parts[Constants.Metadata.SONG_ID_INDEX];

@@ -40,6 +40,9 @@ public class JobRunner {
                 if (!runTopFadeIn(args)) {
                     System.exit(1);
                 }
+                if (!runSongLongestSong(args)) {
+                    System.exit(1);
+                }
                 break;
             case "1":
                 if (!runSongCountJob(args)) {
@@ -58,6 +61,11 @@ public class JobRunner {
                 break;
             case "4":
                 if (!runTopFadeIn(args)) {
+                    System.exit(1);
+                }
+                break;
+            case "5":
+                if (!runSongLongestSong(args)) {
                     System.exit(1);
                 }
                 break;
