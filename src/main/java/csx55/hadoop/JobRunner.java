@@ -4,6 +4,7 @@ import csx55.hadoop.jobs.hotttnesss.*;
 import csx55.hadoop.jobs.longestFade.*;
 import csx55.hadoop.jobs.longestSongs.*;
 import csx55.hadoop.jobs.loudestSongs.*;
+import csx55.hadoop.jobs.mostEngergetic.*;
 import csx55.hadoop.jobs.songCount.*;
 
 import org.apache.hadoop.filecache.DistributedCache;
@@ -43,7 +44,11 @@ public class JobRunner {
                 if (!runSongLongestSong(args)) {
                     System.exit(1);
                 }
+                if (!runMostEnergetic(args)) {
+                    System.exit(1);
+                }
                 break;
+
             case "1":
                 if (!runSongCountJob(args)) {
                     System.exit(1);
@@ -66,6 +71,11 @@ public class JobRunner {
                 break;
             case "5":
                 if (!runSongLongestSong(args)) {
+                    System.exit(1);
+                }
+                break;
+            case "6":
+                if (!runMostEnergetic(args)) {
                     System.exit(1);
                 }
                 break;
@@ -315,6 +325,26 @@ private static boolean runSongLongestSong(String[] args) throws Exception {
         // Execute the sort job and wait for it to finish
         success = sortJob.waitForCompletion(true);
     }
+    return success;
+}
+
+private static boolean runMostEnergetic(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf);
+    job.setJarByClass(JobRunner.class);
+    job.setJobName("MostEnergetic");
+
+    job.setMapperClass(MostEnergeticMapper.class);
+    job.setReducerClass(MostEnergeticReducer.class);
+
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+    FileOutputFormat.setOutputPath(job, new Path(args[2] + "_mostEnergetic"));
+
+    boolean success = job.waitForCompletion(true);
+
     return success;
 }
 
