@@ -296,7 +296,27 @@ private static boolean runSongLongestSong(String[] args) throws Exception {
     FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
     FileOutputFormat.setOutputPath(job, new Path(args[2] + "_songLongestSong"));
 
-    return job.waitForCompletion(true);
+    boolean success = job.waitForCompletion(true);
+    if (success) {
+        Job sortJob = Job.getInstance();
+        sortJob.setJarByClass(JobRunner.class); // Ensure JobRunner is your main class
+
+        // Set the new classes for the mapper and reducer
+        sortJob.setMapperClass(LongestSongsCombinedMapper.class);
+        sortJob.setReducerClass(LongestSongsCombinedReducer.class);
+
+        // Set the final output key/value classes according to the reducer's outputs
+        sortJob.setOutputKeyClass(DoubleWritable.class);
+        sortJob.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_songLongestSong"));
+        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_songLongestSongCombined"));
+
+        // Execute the sort job and wait for it to finish
+        success = sortJob.waitForCompletion(true);
+    }
+    return success;
 }
+
 }
 

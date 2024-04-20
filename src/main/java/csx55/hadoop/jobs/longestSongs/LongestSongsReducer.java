@@ -11,7 +11,7 @@ public class LongestSongsReducer extends Reducer<Text, Text, Text, Text> {
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         String artistID = "";
         String songTitle = "";
-        String fadein = "";
+        String duration = "";
         String artistName = "";
 
         for (Text val : values) {
@@ -19,7 +19,7 @@ public class LongestSongsReducer extends Reducer<Text, Text, Text, Text> {
             try {
                 if (data.startsWith("ANALYSIS_")) {
                     // Extract loudness, assuming it follows the tag directly
-                    fadein = data.substring(9);
+                    duration = data.substring(9);
                 } else if (data.startsWith("METADATA_")) {
                     // Check if data is correctly formatted
                     String[] parts = data.substring(9).split("\\|");
@@ -40,8 +40,8 @@ public class LongestSongsReducer extends Reducer<Text, Text, Text, Text> {
         }
 
         // Only output if all parts are non-empty and valid
-        if (!artistID.isEmpty() && !songTitle.isEmpty() && !fadein.isEmpty()) {
-            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + fadein));
+        if (!artistID.isEmpty() && !songTitle.isEmpty() && !duration.isEmpty()) {
+            context.write(key, new Text(artistID + ", " + artistName + ", " + songTitle + ", " + duration));
         }
     }
 }
