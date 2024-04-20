@@ -10,7 +10,9 @@ public class LongestFadeSortedMapper extends Mapper<LongWritable, Text, Text, Te
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] parts = value.toString().split(",");
         if (parts.length >= 6) {
-            String artistID = parts[0].trim();
+            String artistParts = parts[0].trim();
+            String[] artistPartsSplit = artistParts.split("\t");
+            String artistID = artistPartsSplit[0].trim();
             String artistName = parts[1].trim();
             double endOfFadeIn = Double.parseDouble(parts[3].trim());
             double duration = Double.parseDouble(parts[4].trim());
