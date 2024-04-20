@@ -11,17 +11,22 @@ public class LongestFadeSortedReducer extends Reducer<Text, Text, DoubleWritable
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         double totalFadeTime = 0;
+        String artistName = "";
         int count = 0;
 
         for (Text val : values) {
-            totalFadeTime += Double.parseDouble(val.toString());
+            //split val to get artistName and FaceTime
+            String[] parts = val.toString().split(",");
+            //add FaceTime to totalFadeTime
+            artistName = parts[1];
+            totalFadeTime += Double.parseDouble(parts[0]);
             count++;
         }
 
         if (count > 0) {
             double averageFadeTime = totalFadeTime / count;
             // Emit negative to sort in descending order
-            context.write(new DoubleWritable(-averageFadeTime), key);
+            context.write(new DoubleWritable(-averageFadeTime), new Text(key + ", " + artistName));
         }
     }
 }
