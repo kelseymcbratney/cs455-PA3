@@ -10,14 +10,14 @@ public class LongestFadeSortedMapper extends Mapper<LongWritable, Text, Text, Te
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] parts = value.toString().split(",");
         if (parts.length >= 6) {
-            String artistID = parts[0].trim();
+            String artistName = parts[2].trim();  // Assuming artist name is at index 2
             double endOfFadeIn = Double.parseDouble(parts[3].trim());
             double duration = Double.parseDouble(parts[4].trim());
             double startOfFadeOut = Double.parseDouble(parts[5].trim());
 
             // Calculate fade time: end of fade in + (duration - start of fade out)
             double fadeTime = endOfFadeIn + (duration - startOfFadeOut);
-            context.write(new Text(artistID), new Text(String.valueOf(fadeTime)));
+            context.write(new Text(artistName), new Text(String.valueOf(fadeTime)));
         }
     }
 }

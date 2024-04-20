@@ -247,23 +247,23 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
         success = sortJob.waitForCompletion(true);
     }
 
-    if (success){
-        Job sortJob = Job.getInstance();
-        sortJob.setJarByClass(JobRunner.class);
-
-        job.setMapperClass(Mapper.class);
-        job.setReducerClass(Reducer.class);
-
-        job.setMapOutputKeyClass(DoubleWritable.class);
-        job.setMapOutputValueClass(Text.class);
-        job.setOutputKeyClass(DoubleWritable.class);
-        job.setOutputValueClass(Text.class);
-
-        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
-        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInOrder"));
-
-        success = sortJob.waitForCompletion(true);
-    }
+//    if (success){
+//        Job sortJob = Job.getInstance();
+//        sortJob.setJarByClass(JobRunner.class);
+//
+//        job.setMapperClass(Mapper.class);
+//        job.setReducerClass(Reducer.class);
+//
+//        job.setMapOutputKeyClass(DoubleWritable.class);
+//        job.setMapOutputValueClass(Text.class);
+//        job.setOutputKeyClass(DoubleWritable.class);
+//        job.setOutputValueClass(Text.class);
+//
+//        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
+//        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInOrder"));
+//
+//        success = sortJob.waitForCompletion(true);
+//    }
     return success;
 }
 
