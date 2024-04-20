@@ -15,18 +15,16 @@ public class LongestFadeSortedReducer extends Reducer<Text, Text, DoubleWritable
         int count = 0;
 
         for (Text val : values) {
-            //split val to get artistName and FaceTime
             String[] parts = val.toString().split(",");
-            //add FaceTime to totalFadeTime
-            artistName = parts[1];
-            totalFadeTime += Double.parseDouble(parts[0]);
+            double fadeTime = Double.parseDouble(parts[0].trim());
+            artistName = parts[1].trim();  // Assuming last part after the split is the artist name
+            totalFadeTime += fadeTime;
             count++;
         }
 
         if (count > 0) {
             double averageFadeTime = totalFadeTime / count;
-            key = new Text(key.toString().split("\t")[0]);
-            context.write(new DoubleWritable(-averageFadeTime), new Text(key + ", " + artistName));
+            context.write(new DoubleWritable(-averageFadeTime), new Text(key.toString() + ", " + artistName));
         }
     }
 }
