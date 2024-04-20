@@ -230,19 +230,19 @@ private static boolean runTopFadeIn(String[] args) throws Exception {
     boolean success = job.waitForCompletion(true);
 
     if(success){
-        Job sortJob = Job.getInstance();
-        sortJob.setJarByClass(JobRunner.class);
+        Job combinedJob = Job.getInstance();
+        combinedJob.setJarByClass(JobRunner.class);
 
-        sortJob.setMapperClass(LongestFadeCombinedMapper.class);
-        sortJob.setReducerClass(LongestFadeCombinedReducer.class);
+        combinedJob.setMapperClass(LongestFadeCombinedMapper.class);
+        combinedJob.setReducerClass(LongestFadeCombinedReducer.class);
 
-        sortJob.setOutputKeyClass(Text.class);
-        sortJob.setOutputValueClass(Text.class);
+        combinedJob.setOutputKeyClass(Text.class);
+        combinedJob.setOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_topFadeIn"));
-        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInCombined"));
+        FileInputFormat.addInputPath(combinedJob, new Path(args[2] + "_topFadeIn"));
+        FileOutputFormat.setOutputPath(combinedJob, new Path(args[2] + "_topFadeInCombined"));
 
-        success = sortJob.waitForCompletion(true);
+        success = combinedJob.waitForCompletion(true);
     }
 
     if (success){
