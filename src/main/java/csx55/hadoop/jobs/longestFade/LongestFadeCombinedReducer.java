@@ -20,7 +20,7 @@ public class LongestFadeCombinedReducer extends Reducer<Text, Text, DoubleWritab
         for (Text val : values) {
             String[] parts = val.toString().split(",");
             totalFadeTime = Double.parseDouble(parts[0].trim());
-            artistName = parts[1].trim();  // Assuming last part after the split is the artist name
+            artistName = parts[1].trim();
         }
 
         if (artistName != null && !artistName.isEmpty()) {
@@ -37,6 +37,7 @@ public class LongestFadeCombinedReducer extends Reducer<Text, Text, DoubleWritab
 
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
+
         context.write(new DoubleWritable(recordFadeTime), new Text(recordFadeArtist));
 
         }

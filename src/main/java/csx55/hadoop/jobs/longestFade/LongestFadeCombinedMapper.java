@@ -19,7 +19,7 @@ public class LongestFadeCombinedMapper extends Mapper<LongWritable, Text, Text, 
             double startOfFadeOut = Double.parseDouble(parts[5].trim());
 
             // Calculate fade time: end of fade in + (duration - start of fade out)
-            double fadeTime = endOfFadeIn + (duration - startOfFadeOut);
+            double fadeTime = endOfFadeIn + duration - startOfFadeOut;
             context.write(new Text(artistID), new Text(fadeTime + ", " + artistName));
         }
     }
