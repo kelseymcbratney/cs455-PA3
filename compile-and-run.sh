@@ -15,6 +15,7 @@ hadoop fs -rm -r /PA3/output_topFadeInSorted
 hadoop fs -rm -r /PA3/output_songLongestSong
 hadoop fs -rm -r /PA3/output_songLongestSongCombined
 hadoop fs -rm -r /PA3/output_mostEnergetic
+hadoop fs -rm -r /PA3/output_mostEnergeticCombined
 
 
 rm JobRunner.jar

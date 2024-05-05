@@ -10,7 +10,7 @@ public class MostEngergeticCombinedMapper extends Mapper<LongWritable, Text, Dou
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] parts = value.toString().split(",");
         if (parts.length >= 4) {
-            String artistID = parts[0].trim().split("\\|")[1];
+            String artistID = parts[0].trim().split("\t")[1];
             String artistName = parts[1].trim();
             String songTitle = parts[2].trim();
             double dancability = Double.parseDouble(parts[3].trim());
