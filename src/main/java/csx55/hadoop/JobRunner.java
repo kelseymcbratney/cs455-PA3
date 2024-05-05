@@ -267,6 +267,23 @@ public class JobRunner {
             success = combinedJob.waitForCompletion(true);
         }
 
+        if (success) {
+            Job finalJob = Job.getInstance(conf);
+            finalJob.setJarByClass(JobRunner.class);
+            finalJob.setJobName("TopFadeInFinal");
+
+            finalJob.setMapperClass(LongestFadeFinalMapper.class);
+            finalJob.setReducerClass(LongestFadeFinalReducer.class);
+
+            finalJob.setOutputKeyClass(Text.class);
+            finalJob.setOutputValueClass(Text.class);
+
+            FileInputFormat.setInputPaths(finalJob, new Path(args[2] + "_topFadeInCombined"));
+            FileOutputFormat.setOutputPath(finalJob, new Path(args[2] + "_topFadeInFinal"));
+
+            success = finalJob.waitForCompletion(true);
+        }
+
         return success;
     }
 

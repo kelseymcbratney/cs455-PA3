@@ -19,7 +19,9 @@ public class LongestFadeFinalReducer extends Reducer<Text, Text, DoubleWritable,
 
         for (Text val : values) {
             String[] parts = val.toString().split(",");
-            totalFadeTime = Double.parseDouble(parts[0].trim());
+            String artistParts = parts[0].trim();
+            String[] artistPartsSplit = artistParts.split("\t");
+            totalFadeTime = Double.parseDouble(artistPartsSplit[1].trim());
             artistName = parts[1].trim();
         }
 
