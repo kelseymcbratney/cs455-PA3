@@ -19,20 +19,20 @@ public class LongestFadeFinalReducer extends Reducer<Text, Text, DoubleWritable,
 
         for (Text val : values) {
             String[] parts = val.toString().split(",");
-            String artistParts = parts[0].trim();
-            String[] artistPartsSplit = artistParts.split("\t");
-            totalFadeTime = Double.parseDouble(artistPartsSplit[1].trim());
-            artistName = parts[1].trim();
+            if (parts.length >= 2) {
+                double fadeTime = Double.parseDouble(parts[0].trim());
+                totalFadeTime += fadeTime;
+                artistName = parts[1].trim();
+            }
         }
 
-        if (artistName != null && !artistName.isEmpty()) {
+        if (!artistName.isEmpty()) {
             totalFadeTime = artistFadeTimes.getOrDefault(artistName, 0.0) + totalFadeTime;
             artistFadeTimes.put(artistName, totalFadeTime);
 
             if (totalFadeTime > recordFadeTime){
                 recordFadeTime = totalFadeTime;
                 recordFadeArtist = artistName;
-
             }
         }
     }
