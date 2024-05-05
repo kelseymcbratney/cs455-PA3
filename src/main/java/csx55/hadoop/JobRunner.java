@@ -267,26 +267,6 @@ public class JobRunner {
             success = combinedJob.waitForCompletion(true);
         }
 
-        if (success) {
-            // Third Job: Sorting Combined Results
-            Job sortJob = Job.getInstance(conf);
-            sortJob.setJarByClass(JobRunner.class);
-            sortJob.setJobName("TopFadeInSorted");
-
-            sortJob.setMapperClass(LongestFadeSortedMapper.class);
-            sortJob.setReducerClass(LongestFadeSortedReducer.class);
-
-            sortJob.setMapOutputKeyClass(DoubleWritable.class);
-            sortJob.setMapOutputValueClass(Text.class);
-            sortJob.setOutputKeyClass(Text.class);
-            sortJob.setOutputValueClass(DoubleWritable.class);
-
-            FileInputFormat.setInputPaths(sortJob, new Path(args[2] + "_topFadeInCombined"));
-            FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_topFadeInSorted"));
-
-            success = sortJob.waitForCompletion(true);
-        }
-
         return success;
     }
 
