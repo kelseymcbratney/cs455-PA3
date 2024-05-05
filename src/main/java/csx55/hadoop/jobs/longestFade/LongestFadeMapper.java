@@ -25,6 +25,7 @@ public class LongestFadeMapper extends Mapper<LongWritable, Text, Text, Text> {
         String outputValue = "";
         String duration = "";
         String startOfFadeOut = "";
+        String fadeDuration = "";
 
         if (identifier.contains("analysis")) {
             // Assuming 'analysis' file contains the SONG_ID_ANALYSIS and other fields

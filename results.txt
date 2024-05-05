@@ -19,7 +19,22 @@ Median: 223.05914       SODYZLC12A6D4F7BD3   Negocio Prohibido by El Poder del N
         223.05914       SOLMLRP12AB01890AF   Satellite Of Love (Album Version) by Porno For Pyros
 
 Q6
-added score together
+0.0     ARVOWE21187FB3AE3C, Enuff Z Nuff, Style
+0.0     ARYLG3I119B8668696, Rockin' Dopsie_ Jr., Down at the Mardi Gras
+0.0     AR040QX1187FB4CFE1, Alexisonfire, Accept Crime (Album Version)
+0.0     ARQ3VBJ1187FB3FE55, Dario Marianelli, The Harbour
+0.0     ARHWVGW1187FB41479, The Paul Butterfield Blues Band, Thank You Mr. Poobah ( Remastered 97' Version )
+0.0     ARDCQM61187B9951CE, Sneaky Sound System, Lost In The Future
+0.0     ARDRQOR11F4C844DA4, Nikos Kalaintzis, Chira
+0.0     ARG4KW31187FB51B7C, Atomic Rooster, Living Underground
+0.0     ARUZRFN1187B98AC05, Bone Thugs-N-Harmony, 2 Glocks
+0.0     AR02KZG1187FB3B3B4, Hi-Fi Companions, Amoria
+0.0     AR49A9P1187FB3BBBF, Saigon Kick, The Way
+0.0     ARJJYQS1187B996882, Pyrolator, Passage To Melilla
+0.0     ARJ8YLL1187FB3CA93, Morton Gould, Fall River Legend: Conversation: Morton Gould/Agnes de Mille
+0.0     ARNLE621187B98ECB5, Mannheim Steamroller, On The Edge Of Forever
+0.0     ARIZCNG12802FDFC69, Coraleena Ellis, Wide Awake In A Dream
+0.0     ARD39VZ1187B9B9A57, Lloyd Banks, South Side Story
 
 
 
@@ -44,3 +59,5 @@ i standardize, and then compute the total distance to all these average segment 
 i zero-pad either the song vector or the average vector, so they're the same size. This is basically padding with means. This should penalized song vectors that are shorter or longer than the mean.
 then i average these distance values per artist
 pick top1, bottom1
+
+Q10
