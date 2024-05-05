@@ -11,14 +11,16 @@ Q4
 ARD62OC1187FB54B75, Sundial Aeon        4.900000000134241E-4
 
 Q5
-Longest: -1819.76771     SOKKDSX12AB018866A      AROATPL1187FB48E12, UFO, Electric Phase / Hot 'n' Ready / Pack It Up 'n' Go / Cherry / Out In The Street / Let It Roll / Too Hot To Handle
-Shortest: -1.04444        SOYEVCP12AC9E17E09      AR03BDP1187FB5B324, Britney Spears, Someday (I Will Understand)
+Longest: 1819.76771     SOKKDSX12AB018866A      AROATPL1187FB48E12, UFO, Electric Phase / Hot 'n' Ready / Pack It Up 'n' Go / Cherry / Out In The Street / Let It Roll / Too Hot To Handle
+Shortest: 1.04444        SOYEVCP12AC9E17E09      AR03BDP1187FB5B324, Britney Spears, Someday (I Will Understand)
 Median: 223.05914       SODYZLC12A6D4F7BD3   Negocio Prohibido by El Poder del Norte
         223.05914       SOPEGIG12A6D4F8CAB   Ases��name by Charly Garc��a
         223.05914       SOHKQXL12A8C1379B9   Can You Hear The Angels by Virtue
         223.05914       SOLMLRP12AB01890AF   Satellite Of Love (Album Version) by Porno For Pyros
 
 Q6
+added score together
+
 
 
 

@@ -345,6 +345,22 @@ private static boolean runMostEnergetic(String[] args) throws Exception {
 
     boolean success = job.waitForCompletion(true);
 
+    if (success) {
+        Job sortJob = Job.getInstance();
+        sortJob.setJarByClass(JobRunner.class);
+
+        sortJob.setMapperClass(MostEngergeticCombinedMapper.class);
+        sortJob.setReducerClass(MostEngergeticCombinedReducer.class);
+
+        sortJob.setOutputKeyClass(DoubleWritable.class);
+        sortJob.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_mostEnergetic"));
+        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_mostEnergeticCombined"));
+
+        success = sortJob.waitForCompletion(true);
+    }
+
     return success;
 }
 
