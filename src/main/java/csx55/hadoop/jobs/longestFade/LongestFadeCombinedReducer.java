@@ -20,9 +20,7 @@ public class LongestFadeCombinedReducer extends Reducer<Text, Text, Text, Text> 
             double fadeDuration = Double.parseDouble(parts[0]);
             totalFade += fadeDuration;
             // The artist name is the same for all values, so we can extract it once
-            if (artistName == null) {
-                artistName = parts[1];
-            }
+            artistName = parts[1];
         }
 
         // Emit the combined total fade duration for the artist ID along with the artist name
