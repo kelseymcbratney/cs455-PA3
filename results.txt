@@ -36,28 +36,24 @@ Q6
 0.0     ARIZCNG12802FDFC69, Coraleena Ellis, Wide Awake In A Dream
 0.0     ARD39VZ1187B9B9A57, Lloyd Banks, South Side Story
 
+Q7
+Extract features form the analysis file, such as pitch, timbre, start times, loudness scores etc.
+Clean this data to remove any missing values or outliers.
+Calculate the mean, median, mode, standard deviation, and range of each feature.
+Plot the distribution of each feature.
+Output the results summarizing the distribution of each feature.
+
+Q8
+Use the output from question 7 to identify any trends or patterns in the data.
+For example, you could look at the distribution of pitch, timbre, start times, loudness scores etc. to identify any patterns in the data.
+You could also look at the mean, median, mode, standard deviation, and range of each feature to identify any trends in the data.
+Based on this analysis, you could identify which artist is the most generic and which artist is the most unique.
 
 
+Q9
 
-
-Q7:
-The various segment vectors they list all have different sizes per song. So it's really hard to find average ones across all of them. I tried zero-padding them to the max sizes but that made it really slow, because the largest songs are like 10x the average size.
-So instead, i'm reshaping all vectors to the average size:
-first I find the average size per segment type
-then i'm zero-padding/truncating each song's segments to the average size of the corresponding type.
-I omit the _start segment types from the zero padding (i still truncate them if theyre too big), since it wouldnt make sense for those to have zeros—they're monotonically increasing seconds timestamps.
-then I find the average value of each index of each segment type.
-then i collect these back into an average vector for each segment type
- like 2
-
-
-Q8, I'm using the outputs of Q7, then i compute distance from these averages to every song, and average them per artist. Furthest from average is most unique, closest is most generic. Details:
-i get the average vectors for each segment type from Q7 output
-i standardize these so the values are all on the same range
-for each song
-i standardize, and then compute the total distance to all these average segment vectors using sum of euclidean distances.
-i zero-pad either the song vector or the average vector, so they're the same size. This is basically padding with means. This should penalized song vectors that are shorter or longer than the mean.
-then i average these distance values per artist
-pick top1, bottom1
 
 Q10
+Question:
+Looking at metric trend year over year, such as tempo, loudness, fade in, fade out, etc. Looking at the these trends over the years, we can see how music has evolved over the years.
+For example, we can see that the tempo of music has increased over the years, or that the loudness of music has increased over the years. This can give us an insight into how music has evolved over the years, and how it has changed over time.

@@ -1,5 +1,7 @@
 package csx55.hadoop;
 
+import csx55.hadoop.jobs.evenHotter.evenHotterMapper;
+import csx55.hadoop.jobs.evenHotter.evenHotterReducer;
 import csx55.hadoop.jobs.hotttnesss.*;
 import csx55.hadoop.jobs.longestFade.*;
 import csx55.hadoop.jobs.longestSongs.*;
@@ -76,6 +78,11 @@ public class JobRunner {
                 break;
             case "6":
                 if (!runMostEnergetic(args)) {
+                    System.exit(1);
+                }
+                break;
+            case "7":
+                if (!runEvenHotter(args)) {
                     System.exit(1);
                 }
                 break;
@@ -359,6 +366,24 @@ private static boolean runMostEnergetic(String[] args) throws Exception {
     }
 
     return success;
+}
+
+private static boolean runEvenHotter(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    Job job = Job.getInstance(conf);
+    job.setJarByClass(JobRunner.class);
+    job.setJobName("EvenHotter");
+
+    job.setMapperClass(evenHotterMapper.class);
+    job.setReducerClass(evenHotterReducer.class);
+
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
+    FileOutputFormat.setOutputPath(job, new Path(args[2] + "_evenHotter"));
+
+    return job.waitForCompletion(true);
 }
 
 }
