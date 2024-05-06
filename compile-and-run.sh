@@ -18,6 +18,7 @@ hadoop fs -rm -r /PA3/output_mostEnergetic
 hadoop fs -rm -r /PA3/output_mostEnergeticCombined
 hadoop fs -rm -r /PA3/output_topFadeInFinal
 hadoop fs -rm -r /PA3/output_evenHotter
+hadoop fs -rm -r /PA3/output_evenHotterCombined
 
 rm JobRunner.jar
 
