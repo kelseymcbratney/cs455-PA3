@@ -25,7 +25,6 @@ public class evenHotterReducer extends Reducer<Text, Text, Text, Text> {
                 // mapper output = "ANALYSIS_" + hotttnesss + "|" + tempo + "|" + timeSignature + "|" + keySignature + "|" + energy + "|" + danceability + "|" + duration + "|" + loudness;
                 String[] parts = val.toString().substring(9).split("\\|");
                 songTitle = parts[0];
-                System.out.println("Parts" + Arrays.toString(parts));
                 String[] analysisParts = val.toString().substring(9).split("\\|");
                 hotttnesss = analysisParts[0];
                 tempo = analysisParts[1];
