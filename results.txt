@@ -52,6 +52,45 @@ Based on this analysis, you could identify which artist is the most generic and 
 
 Q9
 
+Top Song
+
+Song Title: Nothin' On You [feat. Bruno Mars] (Album Version)
+Artist: Bruno Mars
+hotttness = 1.0
+tempo = 104.038
+timeSignature = 4
+keySignature = 10
+energy = 0.0
+danceability = 0.0
+duration = 269.63
+loudness = -5.38
+
+Bad Song
+
+Song Title: New Milk Cow Blues
+Artist: Moon Mullican
+hotttness = 0.0
+tempo = 80.583
+timeSignature = 3
+keySignature = 2
+energy = 0.0
+danceability = 0.0
+duration = 175.0722
+loudness = -19.273
+
+Better Top Song
+
+Song Title: Kelsey's Song
+Artist: Kelsey M
+hotttness = 1.0
+tempo = 120 - Faster tempo to create more danceable music
+timeSignature = 4 - Standard time signature for pop music
+keySignature = 10 - Key of C major is a popular key for pop music
+energy = 1.0 - High energy to create an upbeat song
+danceability = 1.0 - High danceability to create a catchy song
+duration = 230 - Standard duration for pop songs
+loudness = -5.38 - Standard loudness for pop music
+
 
 Q10
 Question:
