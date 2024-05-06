@@ -4,6 +4,7 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class evenHotterReducer extends Reducer<Text, Text, Text, Text> {
     @Override
@@ -21,17 +22,20 @@ public class evenHotterReducer extends Reducer<Text, Text, Text, Text> {
 
         for (Text val : values) {
             if (val.toString().startsWith("ANALYSIS_")) {
-                String[] parts = val.toString().substring(9).split("\\^");
+                // mapper output = "ANALYSIS_" + hotttnesss + "|" + tempo + "|" + timeSignature + "|" + keySignature + "|" + energy + "|" + danceability + "|" + duration + "|" + loudness;
+                String[] parts = val.toString().substring(9).split("\\|");
                 songTitle = parts[0];
-                hotttnesss = val.toString().substring(9);
-                // outputValue = "ANALYSIS_" + hotttnesss + " ^ " + tempo + " ^ " + timeSignature + " ^ " + keySignature + " ^ " + energy + " ^ " + danceability + " ^ " + duration + " ^ " + loudness;
-                tempo = parts[1];
-                timeSignature = parts[2];
-                keySignature = parts[3];
-                energy = parts[4];
-                danceability = parts[5];
-                duration = parts[6];
-                loudness = parts[7];
+                System.out.println("Parts" + Arrays.toString(parts));
+                String[] analysisParts = val.toString().substring(9).split("\\|");
+                hotttnesss = analysisParts[0];
+                tempo = analysisParts[1];
+                timeSignature = analysisParts[2];
+                keySignature = analysisParts[3];
+                energy = analysisParts[4];
+                danceability = analysisParts[5];
+                duration = analysisParts[6];
+                loudness = analysisParts[7];
+
 
             } else if (val.toString().startsWith("METADATA_")) {
                 String[] metaParts = val.toString().substring(9).split("\\|");
