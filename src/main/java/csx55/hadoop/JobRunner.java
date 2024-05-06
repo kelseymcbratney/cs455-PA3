@@ -51,8 +51,10 @@ public class JobRunner {
                 if (!runMostEnergetic(args)) {
                     System.exit(1);
                 }
+                if (!runEvenHotter(args)) {
+                    System.exit(1);
+                }
                 break;
-
             case "1":
                 if (!runSongCountJob(args)) {
                     System.exit(1);
