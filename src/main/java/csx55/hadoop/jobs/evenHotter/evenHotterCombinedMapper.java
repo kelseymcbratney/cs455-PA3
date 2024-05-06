@@ -4,6 +4,7 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class evenHotterCombinedMapper extends Mapper<LongWritable, Text, DoubleWritable, Text> {
 
@@ -17,6 +18,7 @@ public class evenHotterCombinedMapper extends Mapper<LongWritable, Text, DoubleW
             String artistName = parts[0];
             double hotttnesss;
             System.out.println("parts[1]: " + parts[1]);
+            System.out.println("parts[1] type: " + Arrays.toString(parts));
             try {
                 hotttnesss = Double.parseDouble(parts[1]);
                 // Emit negative to sort in descending order
