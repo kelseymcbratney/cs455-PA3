@@ -1,5 +1,7 @@
 package csx55.hadoop;
 
+import csx55.hadoop.jobs.evenHotter.evenHotterCombinedMapper;
+import csx55.hadoop.jobs.evenHotter.evenHotterCombinedReducer;
 import csx55.hadoop.jobs.evenHotter.evenHotterMapper;
 import csx55.hadoop.jobs.evenHotter.evenHotterReducer;
 import csx55.hadoop.jobs.hotttnesss.*;
@@ -383,7 +385,26 @@ private static boolean runEvenHotter(String[] args) throws Exception {
     FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
     FileOutputFormat.setOutputPath(job, new Path(args[2] + "_evenHotter"));
 
-    return job.waitForCompletion(true);
+    boolean success = job.waitForCompletion(true);
+
+    if (success) {
+        Job sortJob = Job.getInstance();
+        sortJob.setJarByClass(JobRunner.class);
+
+        sortJob.setMapperClass(evenHotterCombinedMapper.class);
+        sortJob.setReducerClass(evenHotterCombinedReducer.class);
+
+        sortJob.setOutputKeyClass(DoubleWritable.class);
+        sortJob.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(sortJob, new Path(args[2] + "_evenHotter"));
+        FileOutputFormat.setOutputPath(sortJob, new Path(args[2] + "_evenHotterCombined"));
+
+        success = sortJob.waitForCompletion(true);
+    }
+
+    return success;
+
 }
 
 }

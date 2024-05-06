@@ -9,13 +9,15 @@ public class hotttnesssSongSortedReducer extends Reducer<DoubleWritable, Text, T
 
     @Override
     protected void reduce(DoubleWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        // mapper output (-hotttnesss), new Text(artistName + "|" + songTitle + "|" + parts[3] + "|" + parts[4] + "|" + parts[5] + "|" + parts[6] + "|" + parts[7] + "|" + parts[8] + "|" + parts[9]));
         double hotttnesss = -key.get(); // Convert back to positive as we negated it in mapper
         for (Text value : values) {
             String[] parts = value.toString().split("\\|");
-            if (parts.length == 2) {  // artistName and songTitle
-                String output = parts[0] + " - " + parts[1];  // Format: artistName - songTitle
+            if (parts.length == 10) {  // artistName and songTitle
+                String output = parts[0] + " - " + parts[1] + " - " + parts[3] + " - " + parts[4] + " - " + parts[5] + " - " + parts[6] + " - " + parts[7] + " - " + parts[8] + " - " + parts[9];
                 context.write(new Text(output), new DoubleWritable(hotttnesss));
             }
+
         }
     }
 }
