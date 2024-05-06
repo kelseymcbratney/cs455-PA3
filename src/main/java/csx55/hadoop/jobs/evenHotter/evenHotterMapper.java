@@ -37,7 +37,7 @@ public class evenHotterMapper extends Mapper<LongWritable, Text, Text, Text> {
             String duration = parts[Constants.Analysis.DURATION_INDEX];
             String loudness = parts[Constants.Analysis.LOUDNESS_INDEX];
 
-            outputValue = "ANALYSIS_" + hotttnesss + "^" + tempo + "^" + timeSignature + "^" + keySignature + "^" + energy + "^" + danceability + "^" + duration + "^" + loudness;
+            outputValue = "ANALYSIS_" + hotttnesss + " ^ " + tempo + " ^ " + timeSignature + " ^ " + keySignature + " ^ " + energy + " ^ " + danceability + " ^ " + duration + " ^ " + loudness;
         } else {
             // Assuming 'metadata' file contains the SONG_ID and other fields
             songId = parts[Constants.Metadata.SONG_ID_INDEX];
